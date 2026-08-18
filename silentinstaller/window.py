@@ -39,12 +39,15 @@ THEME_CHOICES = ("auto", "light", "dark")
 
 EXPORT_FILENAME = "silentinstaller-auswahl.json"
 
+#: Angezeigter Name samt Fassung, etwa »SilentInstaller 1.2.1«.
+TITEL = f"SilentInstaller {__version__}"
+
 
 class MainWindow(Adw.ApplicationWindow):
     def __init__(self, application: Adw.Application, distro: Distro) -> None:
         super().__init__(
             application=application,
-            title="SilentInstaller",
+            title=TITEL,
             default_width=1080,
             default_height=760,
             icon_name=APP_ID,
@@ -161,7 +164,7 @@ class MainWindow(Adw.ApplicationWindow):
             subtitle += " – " + _("nicht unterstützt")
         header = Adw.HeaderBar()
         header.set_title_widget(
-            Adw.WindowTitle(title="SilentInstaller", subtitle=esc(subtitle))
+            Adw.WindowTitle(title=TITEL, subtitle=esc(subtitle))
         )
 
         toolbar = Adw.ToolbarView()
