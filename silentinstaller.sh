@@ -10,7 +10,17 @@
 #
 set -uo pipefail
 
-HIER="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# Aufgerufen wird oft über einen Verweis in ~/.local/bin. Ohne Auflösen läge
+# das vermeintliche Programmverzeichnis dort – und Python fände sein Paket nicht.
+QUELLE="${BASH_SOURCE[0]}"
+while [ -L "$QUELLE" ]; do
+  ZIEL="$(readlink "$QUELLE")"
+  case "$ZIEL" in
+    /*) QUELLE="$ZIEL" ;;
+    *)  QUELLE="$(dirname -- "$QUELLE")/$ZIEL" ;;
+  esac
+done
+HIER="$(cd -- "$(dirname -- "$QUELLE")" && pwd)"
 
 rot=$'\e[31m'; gruen=$'\e[32m'; gelb=$'\e[33m'; fett=$'\e[1m'; aus=$'\e[0m'
 

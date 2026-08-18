@@ -4,6 +4,18 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.3.1] – 2026-08-18
+
+### Behoben
+
+- **Der Terminal-Befehl `silentinstaller` scheiterte** mit „No module named
+  silentinstaller“. `install.sh` legt ihn als Verweis in `~/.local/bin` an; der
+  Starter ermittelte sein Verzeichnis aber über den Namen, unter dem er
+  aufgerufen wurde – und das war der Ordner des Verweises, in dem kein
+  Python-Paket liegt. Verweise werden jetzt aufgelöst, auch mehrstufige.
+  Der Menüeintrag war nie betroffen: Die `.desktop`-Datei nennt den echten
+  Pfad. Das Debian-Paket ebenso wenig, es bringt ein eigenes Startskript mit.
+
 ## [1.3.0] – 2026-08-18
 
 ### Neu
@@ -179,6 +191,7 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Starter `silentinstaller.sh`, der fehlende GTK4-Abhängigkeiten nachrüstet,
   sowie `install.sh` für den Menüeintrag.
 
+[1.3.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.1
 [1.3.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.0
 [1.2.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.2.1
 [1.2.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.2.0
