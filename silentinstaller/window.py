@@ -916,7 +916,9 @@ class MainWindow(Adw.ApplicationWindow):
     # -- Einstellungen -----------------------------------------------------
 
     def _on_preferences(self, *_args) -> None:
-        window = Adw.PreferencesWindow(transient_for=self, modal=True)
+        window = Adw.PreferencesWindow(
+            transient_for=self, modal=True, title=_("Einstellungen")
+        )
         page = Adw.PreferencesPage(
             title=_("Allgemein"), icon_name="preferences-system-symbolic"
         )

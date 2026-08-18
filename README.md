@@ -12,6 +12,8 @@ Der Desktop ist dabei egal: GNOME, KDE, XFCE, Cinnamon, Sway. Die Oberfläche
 baut auf GTK 4 und libadwaita, läuft also überall – auf Deutsch oder Englisch,
 hell oder dunkel.
 
+<img src="docs/screenshots/01-uebersicht.png" alt="Übersicht aller Programme" width="820">
+
 ## Was es kann
 
 - **Ein Katalog, zwei Welten.** Jedes Programm kennt seine Paketnamen für APT
@@ -100,6 +102,8 @@ Tastenkürzel: `Strg+N` neues Programm, `Strg+F` suchen, `Strg+R`
 Installationsstand neu prüfen, `Strg+D` Skript anzeigen, `Strg+S` Auswahl
 sichern, `Strg+O` Auswahl laden, `Strg+Q` beenden.
 
+<img src="docs/screenshots/05-menue.png" alt="Hauptmenü mit Erklärungen" width="820">
+
 ## Die Auswahl auf den nächsten Rechner mitnehmen
 
 Genau dafür ist SilentInstaller gedacht: einmal zusammenstellen, überall
@@ -156,6 +160,8 @@ einziges kaputtes Paket nicht den ganzen Durchlauf kippt.
 
 **Abbrechen** hält nach dem laufenden Schritt an, statt mitten in einer
 Paketoperation abzuschießen – das hinterlässt keine halbfertige Paketdatenbank.
+
+<img src="docs/screenshots/08-skript.png" alt="Vorschau des erzeugten Shell-Skripts" width="820">
 
 ## Eigene Programme eintragen
 
@@ -220,6 +226,16 @@ Grafik & Foto, Entwicklung, System & Werkzeuge, Sicherheit & Backup, Spiele,
 Die Kategorie **Schriften** deckt dreizehn Bündel ab – von Noto für alle
 Schriftsysteme über farbige Emoji bis zu Programmierschriften mit Ligaturen.
 Sie lassen sich genauso installieren wie entfernen.
+
+## Weitere Bilder
+
+| | |
+| --- | --- |
+| [Kategorie „Schriften“](docs/screenshots/02-schriften.png) | [Suche](docs/screenshots/03-suche.png) |
+| [Kategorie „Entwicklung“](docs/screenshots/04-entwicklung.png) | [Infofenster zu Profilen](docs/screenshots/06-infofenster.png) |
+| [Einstellungen](docs/screenshots/07-einstellungen.png) | [Dunkles Erscheinungsbild](docs/screenshots/09-dunkel.png) |
+
+Alle Aufnahmen entstanden unter Debian 13.
 
 ## Lizenz
 

@@ -8,6 +8,13 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 
 ### Neu
 
+- **Bildschirmfotos im README.** Zehn Aufnahmen unter `docs/screenshots/`,
+  entstanden in einem Debian-13-Container unter Xvfb.
+- **Auf Debian 13 geprüft.** Paketinstallation, das Freischalten der
+  `contrib`-, `non-free`- und `non-free-firmware`-Bereiche in den
+  deb822-Quellen, alle vier Fremdquellen mit eigenem Signaturschlüssel sowie
+  eine Probeinstallation aus einer Fremdquelle laufen durch. Die Oberfläche
+  startet unter Debian 13 und findet für alle 84 Einträge eine Quelle.
 - **Debian-Paket.** `./build-deb.sh` baut ein installierbares
   `silentinstaller_<version>_all.deb` mit Menüeintrag, Symbolen im
   hicolor-Thema und allen Abhängigkeiten. Das Skript läuft auch auf einem
@@ -105,6 +112,12 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Der Starter `silentinstaller.sh` meldet sich in der Systemsprache.
 
 ### Behoben
+
+- Das Einstellungsfenster trug den englischen Titel „Preferences“, auch bei
+  deutscher Oberfläche – `Adw.PreferencesWindow` bekam keinen eigenen Titel.
+- Lag das Benutzerverzeichnis unmittelbar unter der Wurzel, etwa `/root`,
+  entstand aus dem Platzhalter für den Benutzernamen der unsinnige Pfad
+  `/USER/…`. In diesem Fall wird jetzt die Tilde verwendet.
 
 - Beim Bearbeiten eines mitgelieferten Eintrags gingen `homepage` und
   `pre_install` verloren, weil der Editor keine Felder dafür hat.

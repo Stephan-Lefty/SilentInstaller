@@ -4,12 +4,19 @@ Offene Punkte und Ideen. Erledigtes wandert ins [Änderungsprotokoll](CHANGELOG.
 
 ## Als Nächstes
 
-- [ ] **Auf echtem Debian 13 testen.** Bisher nur auf Manjaro (Arch) gelaufen.
-      Besonders prüfen: `si_enable_components` gegen die deb822-Quellen unter
-      `/etc/apt/sources.list.d/debian.sources`, Fremdquellen für VS Code,
-      Signal, Brave und Vivaldi sowie der `.deb`-Weg für Google Chrome.
-- [ ] **Screenshot fürs README.** Der Versuch über XWayland ist gescheitert;
-      auf einem X11-Rechner oder mit Spectacle von Hand nachholen.
+- [x] ~~**Auf echtem Debian 13 testen.**~~ Am 18.08.2026 in einem
+      Debian-13-Container geprüft: Paketinstallation samt Abhängigkeiten,
+      Freischalten von `contrib`, `non-free` und `non-free-firmware` in den
+      deb822-Quellen, alle vier Fremdquellen mit Signaturschlüssel,
+      `apt-get update` und eine Probeinstallation von Visual Studio Code –
+      alle Schritte mit Rückgabe 0. Die Oberfläche startet unter Debian 13,
+      erkennt das System und findet für alle 84 Einträge eine Quelle.
+      **Offen bleibt:** ein Durchlauf auf einem echten Debian-Desktop mit
+      polkit-Passwortabfrage; im Container läuft das Skript als root.
+- [x] ~~**Screenshot fürs README.**~~ Zehn Aufnahmen unter `docs/screenshots/`,
+      erzeugt in einem Debian-13-Container unter Xvfb. Neu erzeugen lassen sie
+      sich mit dem Skript im Anhang des Änderungsprotokolls; unter Wayland
+      liefert ein Bildschirmfoto des GTK4-Fensters keine brauchbare Datei.
 
 ## Ideen
 

@@ -11,6 +11,8 @@ The desktop does not matter: GNOME, KDE, XFCE, Cinnamon, Sway. The interface is
 built on GTK 4 and libadwaita, so it runs everywhere — in English or German,
 light or dark.
 
+<img src="docs/screenshots/01-uebersicht.png" alt="Overview of all programs" width="820">
+
 ## What it does
 
 - **One catalog, two worlds.** Every program knows its package names for APT
@@ -98,6 +100,8 @@ Shortcuts: `Ctrl+N` new program, `Ctrl+F` search, `Ctrl+R` re-check what is
 installed, `Ctrl+D` show script, `Ctrl+S` export selection, `Ctrl+O` import
 selection, `Ctrl+Q` quit.
 
+<img src="docs/screenshots/05-menue.png" alt="Main menu with explanations" width="820">
+
 ## Taking your selection to the next machine
 
 This is what SilentInstaller is for: compose once, use everywhere.
@@ -151,6 +155,8 @@ whole run.
 
 **Cancel** stops after the current step rather than killing a package operation
 mid-flight, which would leave the package database half-finished.
+
+<img src="docs/screenshots/08-skript.png" alt="Preview of the generated shell script" width="820">
 
 ## Adding your own programs
 
@@ -215,6 +221,17 @@ formats, firmware).
 The **fonts** category covers thirteen bundles — from Noto for every writing
 system through colour emoji to coding fonts with ligatures. They install and
 uninstall like anything else.
+
+## More screenshots
+
+| | |
+| --- | --- |
+| [Fonts category](docs/screenshots/02-schriften.png) | [Search](docs/screenshots/03-suche.png) |
+| [Development category](docs/screenshots/04-entwicklung.png) | [Profiles info window](docs/screenshots/06-infofenster.png) |
+| [Preferences](docs/screenshots/07-einstellungen.png) | [Dark colour scheme](docs/screenshots/09-dunkel.png) |
+
+All shots were taken on Debian 13. The interface is shown in German there;
+on an English system every label appears in English.
 
 ## License
 

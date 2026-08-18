@@ -25,10 +25,16 @@ def anzeige_pfad(pfad) -> str:
     wird selbstverständlich weiterhin am echten Ort.
     """
     text = str(pfad)
-    home = str(Path.home())
-    if text == home or text.startswith(home + os.sep):
-        return str(Path.home().parent / "USER") + text[len(home):]
-    return text
+    heim = str(Path.home())
+    if text != heim and not text.startswith(heim + os.sep):
+        return text
+
+    eltern = Path(heim).parent
+    if eltern == Path(os.sep):
+        # Liegt das Benutzerverzeichnis direkt unter der Wurzel – etwa /root –,
+        # ergäbe »/USER« ein falsches Bild. Dann ist die Tilde ehrlicher.
+        return "~" + text[len(heim):]
+    return str(eltern / "USER") + text[len(heim):]
 
 
 def esc(text: str) -> str:
