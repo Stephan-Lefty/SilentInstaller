@@ -40,6 +40,11 @@ Offene Punkte und Ideen. Erledigtes wandert ins [Änderungsprotokoll](CHANGELOG.
 
 ## Bekannte Grenzen
 
+- Unter manchen Desktops erscheint ein frisch angelegter Menüeintrag erst nach
+  einer Neuanmeldung. `install.sh` stößt die Menü- und Symbolverzeichnisse von
+  GNOME, KDE, XFCE und LXQt an; wer eine andere Umgebung fährt, muss sich unter
+  Umständen einmal ab- und wieder anmelden.
+
 - Programme, die nur auf einer der beiden Systemfamilien existieren – etwa
   Synaptic oder Déjà Dup –, werden beim Einlesen einer Auswahldatei auf dem
   anderen System übersprungen und beim Laden gemeldet.

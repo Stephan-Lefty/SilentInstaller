@@ -19,7 +19,6 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
   `silentinstaller_<version>_all.deb` mit Menüeintrag, Symbolen im
   hicolor-Thema und allen Abhängigkeiten. Das Skript läuft auch auf einem
   Arch-System, solange `dpkg-deb` vorhanden ist.
-
 - **Benutzername in angezeigten Pfaden ersetzt.** Wo die Oberfläche einen Pfad
   im eigenen Verzeichnis nennt, steht jetzt `/home/USER/…` statt des echten
   Namens. So lässt sich ein Fenster zeigen oder abfotografieren, ohne ihn
@@ -49,7 +48,6 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
   Rechners festgehalten, bevor irgendetwas verändert wird – über „Profil laden“
   und „Auswahl in Datei sichern“ lässt er sich auf den nächsten Rechner
   übertragen, gleich welcher Systemfamilie.
-
 - **Eigenes Logo.** Weißes Motiv – ein in drei Stufen zerlegter Pfeil, der auf
   eine Festplatte zuläuft – auf blauem Verlauf aus `#1eadf4` und `#0072b5`,
   abgedunkelt mit `#3c2a42`. Die Aussparungen im Laufwerk entstehen über
@@ -76,6 +74,21 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
   dafür war keine Sonderbehandlung nötig, der vorhandene Weg trägt sie mit.
 - Der Eintrag „Schriften für Office-Dokumente“ ist von der Grundausstattung in
   die neue Kategorie umgezogen.
+
+### Behoben
+
+- **`install.sh` stieß Plasmas Menü-Datenbank nie an.** Unter KDE erschien der
+  Eintrag deshalb erst nach einer Neuanmeldung. Der Installer ruft jetzt
+  `kbuildsycoca6` beziehungsweise `kbuildsycoca5` auf, dazu
+  `xdg-desktop-menu forceupdate` für XFCE und LXQt.
+- **`install.sh` meldete auch dann Erfolg, wenn nichts ankam.** Am Ende wird
+  jetzt geprüft, ob Menüeintrag und Symbol wirklich liegen, und unter KDE, ob
+  das Symbol über seinen Namen auffindbar ist. Fehlt etwas, sagt das Skript es.
+- Das Einstellungsfenster trug den englischen Titel „Preferences“, auch bei
+  deutscher Oberfläche – `Adw.PreferencesWindow` bekam keinen eigenen Titel.
+- Lag das Benutzerverzeichnis unmittelbar unter der Wurzel, etwa `/root`,
+  entstand aus dem Platzhalter für den Benutzernamen der unsinnige Pfad
+  `/USER/…`. In diesem Fall wird jetzt die Tilde verwendet.
 
 ## [1.1.0] – 2026-08-18
 
@@ -112,12 +125,6 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Der Starter `silentinstaller.sh` meldet sich in der Systemsprache.
 
 ### Behoben
-
-- Das Einstellungsfenster trug den englischen Titel „Preferences“, auch bei
-  deutscher Oberfläche – `Adw.PreferencesWindow` bekam keinen eigenen Titel.
-- Lag das Benutzerverzeichnis unmittelbar unter der Wurzel, etwa `/root`,
-  entstand aus dem Platzhalter für den Benutzernamen der unsinnige Pfad
-  `/USER/…`. In diesem Fall wird jetzt die Tilde verwendet.
 
 - Beim Bearbeiten eines mitgelieferten Eintrags gingen `homepage` und
   `pre_install` verloren, weil der Editor keine Felder dafür hat.
