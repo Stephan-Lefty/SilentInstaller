@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Schlichtes »i« als symbolisches Icon.
+
+  Bewusst nicht aus dem Systemthema geholt: »dialog-information-symbolic« ist
+  unter Adwaita eine Glühbirne, unter anderen Themen ein Kreis mit Fragezeichen
+  oder ein Ausrufezeichen. Ein eigenes Icon sieht überall gleich aus.
+
+  Die Füllfarbe wird von GTK durch die Vordergrundfarbe ersetzt, weil der
+  Dateiname auf »-symbolic« endet.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <g fill="#bebebe">
+    <circle cx="8" cy="3.5" r="1.6"/>
+    <rect x="6.8" y="6.4" width="2.4" height="6.4" rx="1.2"/>
+  </g>
+</svg>

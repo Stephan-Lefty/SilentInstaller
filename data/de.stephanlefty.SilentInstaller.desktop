@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=SilentInstaller
+GenericName=Post-installation helper
+GenericName[de]=Programme nachinstallieren
+Comment=Install your favourite programs in one go after a fresh setup
+Comment[de]=Lieblingsprogramme nach einer Grundinstallation in einem Rutsch nachrüsten
+Exec=@EXEC@
+Icon=de.stephanlefty.SilentInstaller
+Terminal=false
+Categories=System;PackageManager;
+Keywords=install;packages;software;apt;pacman;flatpak;setup;
+Keywords[de]=Installation;Pakete;Software;apt;pacman;flatpak;einrichten;
+StartupNotify=true

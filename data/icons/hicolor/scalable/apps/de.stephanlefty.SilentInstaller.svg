@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SilentInstaller – Anwendungssymbol
+  Weißes Motiv auf blauem Grund: ein Pfeil, dessen Schaft in drei Stufen
+  zerlegt ist, läuft auf eine Festplatte zu. Das Programm landet leise
+  auf dem Laufwerk.
+
+  Die Aussparungen im Laufwerk entstehen über fill-rule="evenodd" – so
+  scheint der Verlauf des Hintergrunds hindurch, statt ihn mit einer festen
+  Farbe nachzubilden.
+
+  Farben: #1eadf4 Grundfarbe, #0072b5 Verlaufstiefe, #3c2a42 Abdunklung,
+          #ffffff Motiv.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grund" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1eadf4"/>
+      <stop offset="1" stop-color="#0072b5"/>
+    </linearGradient>
+    <radialGradient id="tiefe" cx="0.82" cy="0.9" r="0.85">
+      <stop offset="0" stop-color="#3c2a42" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#3c2a42" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glanz" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.20"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#grund)"/>
+  <rect width="512" height="512" rx="112" fill="url(#tiefe)"/>
+  <rect width="512" height="512" rx="112" fill="url(#glanz)"/>
+
+  <!-- Pfeilschaft in drei Stufen: der Fortschritt läuft nach unten -->
+  <g fill="#ffffff">
+    <rect x="226" y="92" width="60" height="38" rx="12"/>
+    <rect x="226" y="144" width="60" height="38" rx="12"/>
+    <rect x="226" y="196" width="60" height="40" rx="12"/>
+    <path d="M172 216 H340 L256 286 Z"/>
+  </g>
+
+  <!-- Festplatte: Gehäuse, Spindel und zwei Lüftungsstreifen -->
+  <path fill="#ffffff" fill-rule="evenodd" d="
+    M152 310 H360 A22 22 0 0 1 382 332 V400 A22 22 0 0 1 360 422 H152 A22 22 0 0 1 130 400 V332 A22 22 0 0 1 152 310 Z
+    M224 366 A32 32 0 1 0 160 366 A32 32 0 1 0 224 366 Z
+    M204 366 A12 12 0 1 0 180 366 A12 12 0 1 0 204 366 Z
+    M263 340 H347 A9 9 0 0 1 347 358 H263 A9 9 0 0 1 263 340 Z
+    M263 374 H347 A9 9 0 0 1 347 392 H263 A9 9 0 0 1 263 374 Z"/>
+</svg>

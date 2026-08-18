@@ -1,0 +1,1873 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "internet",
+      "name": "Internet",
+      "icon": "web-browser-symbolic",
+      "name_en": "Internet"
+    },
+    {
+      "id": "kommunikation",
+      "name": "Kommunikation",
+      "icon": "user-available-symbolic",
+      "name_en": "Communication"
+    },
+    {
+      "id": "buero",
+      "name": "Büro & Dokumente",
+      "icon": "x-office-document-symbolic",
+      "name_en": "Office & Documents"
+    },
+    {
+      "id": "multimedia",
+      "name": "Multimedia",
+      "icon": "multimedia-player-symbolic",
+      "name_en": "Multimedia"
+    },
+    {
+      "id": "grafik",
+      "name": "Grafik & Foto",
+      "icon": "applications-graphics-symbolic",
+      "name_en": "Graphics & Photos"
+    },
+    {
+      "id": "entwicklung",
+      "name": "Entwicklung",
+      "icon": "applications-engineering-symbolic",
+      "name_en": "Development"
+    },
+    {
+      "id": "system",
+      "name": "System & Werkzeuge",
+      "icon": "applications-utilities-symbolic",
+      "name_en": "System & Tools"
+    },
+    {
+      "id": "sicherheit",
+      "name": "Sicherheit & Backup",
+      "icon": "security-high-symbolic",
+      "name_en": "Security & Backup"
+    },
+    {
+      "id": "spiele",
+      "name": "Spiele",
+      "icon": "applications-games-symbolic",
+      "name_en": "Games"
+    },
+    {
+      "id": "schriften",
+      "name": "Schriften",
+      "name_en": "Fonts",
+      "icon": "font-x-generic-symbolic"
+    },
+    {
+      "id": "grundlagen",
+      "name": "Grundausstattung",
+      "icon": "package-x-generic-symbolic",
+      "name_en": "Essentials"
+    }
+  ],
+  "apps": [
+    {
+      "id": "firefox",
+      "name": "Firefox",
+      "description": "Freier Webbrowser von Mozilla",
+      "description_en": "Free web browser by Mozilla",
+      "category": "internet",
+      "icon": "firefox",
+      "homepage": "https://www.mozilla.org/firefox/",
+      "sources": {
+        "apt": {
+          "packages": [
+            "firefox-esr"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "firefox"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.mozilla.firefox"
+        }
+      }
+    },
+    {
+      "id": "chromium",
+      "name": "Chromium",
+      "description": "Quelloffene Grundlage von Google Chrome",
+      "description_en": "Open-source foundation of Google Chrome",
+      "category": "internet",
+      "icon": "chromium",
+      "sources": {
+        "apt": {
+          "packages": [
+            "chromium"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "chromium"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.chromium.Chromium"
+        }
+      }
+    },
+    {
+      "id": "google-chrome",
+      "name": "Google Chrome",
+      "description": "Browser von Google (unfreie Bestandteile)",
+      "description_en": "Google's browser (contains non-free parts)",
+      "category": "internet",
+      "check_command": "google-chrome-stable",
+      "sources": {
+        "deb": {
+          "url": "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb",
+          "packages": [
+            "google-chrome-stable"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.google.Chrome"
+        }
+      }
+    },
+    {
+      "id": "brave",
+      "name": "Brave Browser",
+      "description": "Chromium-Browser mit eingebautem Werbeblocker",
+      "description_en": "Chromium browser with a built-in ad blocker",
+      "category": "internet",
+      "sources": {
+        "apt": {
+          "packages": [
+            "brave-browser"
+          ],
+          "repo": {
+            "id": "brave-browser",
+            "key_url": "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg",
+            "keyring": "/usr/share/keyrings/silentinstaller-brave.gpg",
+            "line": "deb [signed-by=/usr/share/keyrings/silentinstaller-brave.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+          }
+        },
+        "flatpak": {
+          "ref": "com.brave.Browser"
+        }
+      }
+    },
+    {
+      "id": "vivaldi",
+      "name": "Vivaldi",
+      "description": "Stark anpassbarer Browser",
+      "description_en": "Highly customisable browser",
+      "category": "internet",
+      "sources": {
+        "apt": {
+          "packages": [
+            "vivaldi-stable"
+          ],
+          "repo": {
+            "id": "vivaldi",
+            "key_url": "https://repo.vivaldi.com/archive/linux_signing_key.pub",
+            "keyring": "/usr/share/keyrings/silentinstaller-vivaldi.gpg",
+            "line": "deb [signed-by=/usr/share/keyrings/silentinstaller-vivaldi.gpg] https://repo.vivaldi.com/archive/deb/ stable main"
+          }
+        },
+        "flatpak": {
+          "ref": "com.vivaldi.Vivaldi"
+        }
+      }
+    },
+    {
+      "id": "thunderbird",
+      "name": "Thunderbird",
+      "description": "E-Mail, Kalender und Adressbuch",
+      "description_en": "Email, calendar and address book",
+      "category": "internet",
+      "icon": "thunderbird",
+      "sources": {
+        "apt": {
+          "packages": [
+            "thunderbird"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "thunderbird"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.mozilla.Thunderbird"
+        }
+      }
+    },
+    {
+      "id": "qbittorrent",
+      "name": "qBittorrent",
+      "description": "Werbefreier BitTorrent-Client",
+      "description_en": "Ad-free BitTorrent client",
+      "category": "internet",
+      "sources": {
+        "apt": {
+          "packages": [
+            "qbittorrent"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "qbittorrent"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.qbittorrent.qBittorrent"
+        }
+      }
+    },
+    {
+      "id": "filezilla",
+      "name": "FileZilla",
+      "description": "FTP-, FTPS- und SFTP-Client",
+      "description_en": "FTP, FTPS and SFTP client",
+      "category": "internet",
+      "sources": {
+        "apt": {
+          "packages": [
+            "filezilla"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "filezilla"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.filezillaproject.Filezilla"
+        }
+      }
+    },
+    {
+      "id": "signal",
+      "name": "Signal Desktop",
+      "description": "Verschlüsselter Messenger",
+      "description_en": "Encrypted messenger",
+      "category": "kommunikation",
+      "sources": {
+        "apt": {
+          "packages": [
+            "signal-desktop"
+          ],
+          "repo": {
+            "id": "signal-desktop",
+            "key_url": "https://updates.signal.org/desktop/apt/keys.asc",
+            "keyring": "/usr/share/keyrings/silentinstaller-signal.gpg",
+            "line": "deb [arch=amd64 signed-by=/usr/share/keyrings/silentinstaller-signal.gpg] https://updates.signal.org/desktop/apt xenial main"
+          }
+        },
+        "pacman": {
+          "packages": [
+            "signal-desktop"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.signal.Signal"
+        }
+      }
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram",
+      "description": "Messenger mit Cloud-Verlauf",
+      "description_en": "Messenger with cloud history",
+      "category": "kommunikation",
+      "sources": {
+        "apt": {
+          "packages": [
+            "telegram-desktop"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "telegram-desktop"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.telegram.desktop"
+        }
+      }
+    },
+    {
+      "id": "element",
+      "name": "Element",
+      "description": "Matrix-Client für Chat und Videoanrufe",
+      "description_en": "Matrix client for chat and video calls",
+      "category": "kommunikation",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "pacman": {
+          "packages": [
+            "element-desktop"
+          ]
+        },
+        "flatpak": {
+          "ref": "im.riot.Riot"
+        }
+      }
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "description": "Sprach- und Textchat für Gruppen",
+      "description_en": "Voice and text chat for groups",
+      "category": "kommunikation",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "pacman": {
+          "packages": [
+            "discord"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.discordapp.Discord"
+        }
+      }
+    },
+    {
+      "id": "nextcloud-client",
+      "name": "Nextcloud Desktop",
+      "description": "Dateiabgleich mit der eigenen Nextcloud",
+      "description_en": "File sync with your own Nextcloud",
+      "category": "kommunikation",
+      "sources": {
+        "apt": {
+          "packages": [
+            "nextcloud-desktop"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "nextcloud-client"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.nextcloud.desktopclient.nextcloud"
+        }
+      }
+    },
+    {
+      "id": "jitsi-meet",
+      "name": "Jitsi Meet",
+      "description": "Videokonferenzen ohne Konto",
+      "description_en": "Video conferencing without an account",
+      "category": "kommunikation",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "org.jitsi.jitsi-meet"
+        }
+      }
+    },
+    {
+      "id": "libreoffice",
+      "name": "LibreOffice",
+      "description": "Textverarbeitung, Tabellen, Präsentationen",
+      "description_en": "Word processing, spreadsheets, presentations",
+      "category": "buero",
+      "icon": "libreoffice-startcenter",
+      "sources": {
+        "apt": {
+          "packages": [
+            "libreoffice",
+            "libreoffice-l10n-de",
+            "libreoffice-help-de"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "libreoffice-fresh",
+            "libreoffice-fresh-de"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.libreoffice.LibreOffice"
+        }
+      }
+    },
+    {
+      "id": "onlyoffice",
+      "name": "ONLYOFFICE",
+      "description": "Office-Paket mit sehr guter MS-Office-Verträglichkeit",
+      "description_en": "Office suite with excellent MS Office compatibility",
+      "category": "buero",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "org.onlyoffice.desktopeditors"
+        }
+      }
+    },
+    {
+      "id": "okular",
+      "name": "Okular",
+      "description": "PDF-Betrachter mit Anmerkungen",
+      "description_en": "PDF viewer with annotations",
+      "category": "buero",
+      "sources": {
+        "apt": {
+          "packages": [
+            "okular"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "okular"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.kde.okular"
+        }
+      }
+    },
+    {
+      "id": "joplin",
+      "name": "Joplin",
+      "description": "Notizen und Aufgaben mit Verschlüsselung",
+      "description_en": "Notes and tasks with encryption",
+      "category": "buero",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "net.cozic.joplin_desktop"
+        }
+      }
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "description": "Wissensdatenbank auf Markdown-Basis",
+      "description_en": "Markdown-based knowledge base",
+      "category": "buero",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "md.obsidian.Obsidian"
+        }
+      }
+    },
+    {
+      "id": "calibre",
+      "name": "Calibre",
+      "description": "E-Book-Verwaltung und -Umwandlung",
+      "description_en": "E-book management and conversion",
+      "category": "buero",
+      "sources": {
+        "apt": {
+          "packages": [
+            "calibre"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "calibre"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.calibre_ebook.calibre"
+        }
+      }
+    },
+    {
+      "id": "scribus",
+      "name": "Scribus",
+      "description": "Desktop-Publishing für Flyer und Broschüren",
+      "description_en": "Desktop publishing for flyers and brochures",
+      "category": "buero",
+      "sources": {
+        "apt": {
+          "packages": [
+            "scribus"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "scribus"
+          ]
+        },
+        "flatpak": {
+          "ref": "net.scribus.Scribus"
+        }
+      }
+    },
+    {
+      "id": "vlc",
+      "name": "VLC",
+      "description": "Spielt praktisch jedes Video- und Audioformat",
+      "description_en": "Plays practically every video and audio format",
+      "category": "multimedia",
+      "icon": "vlc",
+      "sources": {
+        "apt": {
+          "packages": [
+            "vlc"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "vlc"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.videolan.VLC"
+        }
+      }
+    },
+    {
+      "id": "mpv",
+      "name": "mpv",
+      "description": "Schlanker, tastaturfreundlicher Videoplayer",
+      "description_en": "Lean, keyboard-friendly video player",
+      "category": "multimedia",
+      "sources": {
+        "apt": {
+          "packages": [
+            "mpv"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "mpv"
+          ]
+        },
+        "flatpak": {
+          "ref": "io.mpv.Mpv"
+        }
+      }
+    },
+    {
+      "id": "audacity",
+      "name": "Audacity",
+      "description": "Audioaufnahme und -bearbeitung",
+      "description_en": "Audio recording and editing",
+      "category": "multimedia",
+      "sources": {
+        "apt": {
+          "packages": [
+            "audacity"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "audacity"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.audacityteam.Audacity"
+        }
+      }
+    },
+    {
+      "id": "obs-studio",
+      "name": "OBS Studio",
+      "description": "Bildschirmaufnahme und Streaming",
+      "description_en": "Screen recording and streaming",
+      "category": "multimedia",
+      "sources": {
+        "apt": {
+          "packages": [
+            "obs-studio"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "obs-studio"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.obsproject.Studio"
+        }
+      }
+    },
+    {
+      "id": "kdenlive",
+      "name": "Kdenlive",
+      "description": "Videoschnitt mit mehreren Spuren",
+      "description_en": "Multi-track video editing",
+      "category": "multimedia",
+      "sources": {
+        "apt": {
+          "packages": [
+            "kdenlive"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "kdenlive"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.kde.kdenlive"
+        }
+      }
+    },
+    {
+      "id": "shotcut",
+      "name": "Shotcut",
+      "description": "Einsteigerfreundlicher Videoschnitt",
+      "description_en": "Beginner-friendly video editing",
+      "category": "multimedia",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "apt": {
+          "packages": [
+            "shotcut"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "shotcut"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.shotcut.Shotcut"
+        }
+      }
+    },
+    {
+      "id": "handbrake",
+      "name": "HandBrake",
+      "description": "Videos umwandeln und verkleinern",
+      "description_en": "Convert and shrink videos",
+      "category": "multimedia",
+      "sources": {
+        "apt": {
+          "packages": [
+            "handbrake"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "handbrake"
+          ]
+        },
+        "flatpak": {
+          "ref": "fr.handbrake.ghb"
+        }
+      }
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "description": "Musik-Streaming",
+      "description_en": "Music streaming",
+      "category": "multimedia",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "com.spotify.Client"
+        }
+      }
+    },
+    {
+      "id": "strawberry",
+      "name": "Strawberry",
+      "description": "Musikspieler für die eigene Sammlung",
+      "description_en": "Music player for your own collection",
+      "category": "multimedia",
+      "sources": {
+        "apt": {
+          "packages": [
+            "strawberry"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "strawberry"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.strawberrymusicplayer.strawberry"
+        }
+      }
+    },
+    {
+      "id": "gimp",
+      "name": "GIMP",
+      "description": "Bildbearbeitung mit Ebenen und Filtern",
+      "description_en": "Image editing with layers and filters",
+      "category": "grafik",
+      "icon": "gimp",
+      "sources": {
+        "apt": {
+          "packages": [
+            "gimp"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "gimp"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.gimp.GIMP"
+        }
+      }
+    },
+    {
+      "id": "inkscape",
+      "name": "Inkscape",
+      "description": "Vektorgrafik für Logos und Illustrationen",
+      "description_en": "Vector graphics for logos and illustrations",
+      "category": "grafik",
+      "sources": {
+        "apt": {
+          "packages": [
+            "inkscape"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "inkscape"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.inkscape.Inkscape"
+        }
+      }
+    },
+    {
+      "id": "krita",
+      "name": "Krita",
+      "description": "Digitales Malen und Zeichnen",
+      "description_en": "Digital painting and drawing",
+      "category": "grafik",
+      "sources": {
+        "apt": {
+          "packages": [
+            "krita"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "krita"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.kde.krita"
+        }
+      }
+    },
+    {
+      "id": "darktable",
+      "name": "darktable",
+      "description": "RAW-Entwicklung und Fotoverwaltung",
+      "description_en": "RAW development and photo management",
+      "category": "grafik",
+      "sources": {
+        "apt": {
+          "packages": [
+            "darktable"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "darktable"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.darktable.Darktable"
+        }
+      }
+    },
+    {
+      "id": "blender",
+      "name": "Blender",
+      "description": "3D-Modellierung, Animation und Rendering",
+      "description_en": "3D modelling, animation and rendering",
+      "category": "grafik",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "apt": {
+          "packages": [
+            "blender"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "blender"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.blender.Blender"
+        }
+      }
+    },
+    {
+      "id": "flameshot",
+      "name": "Flameshot",
+      "description": "Bildschirmfotos mit Beschriftungswerkzeugen",
+      "description_en": "Screenshots with annotation tools",
+      "category": "grafik",
+      "sources": {
+        "apt": {
+          "packages": [
+            "flameshot"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "flameshot"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.flameshot.Flameshot"
+        }
+      }
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "description": "Versionsverwaltung",
+      "description_en": "Version control",
+      "category": "entwicklung",
+      "check_command": "git",
+      "sources": {
+        "apt": {
+          "packages": [
+            "git"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "git"
+          ]
+        }
+      }
+    },
+    {
+      "id": "vscode",
+      "name": "Visual Studio Code",
+      "description": "Editor von Microsoft mit großer Erweiterungsauswahl",
+      "description_en": "Microsoft's editor with a huge extension library",
+      "category": "entwicklung",
+      "check_command": "code",
+      "sources": {
+        "apt": {
+          "packages": [
+            "code"
+          ],
+          "repo": {
+            "id": "vscode",
+            "key_url": "https://packages.microsoft.com/keys/microsoft.asc",
+            "keyring": "/usr/share/keyrings/silentinstaller-microsoft.gpg",
+            "line": "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/silentinstaller-microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+          }
+        },
+        "flatpak": {
+          "ref": "com.visualstudio.code"
+        }
+      }
+    },
+    {
+      "id": "vscodium",
+      "name": "VSCodium",
+      "description": "VS Code ohne Telemetrie von Microsoft",
+      "description_en": "VS Code without Microsoft telemetry",
+      "category": "entwicklung",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "pacman": {
+          "packages": [
+            "code"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.vscodium.codium"
+        }
+      }
+    },
+    {
+      "id": "neovim",
+      "name": "Neovim",
+      "description": "Weiterentwickelter Vim für das Terminal",
+      "description_en": "Modernised Vim for the terminal",
+      "category": "entwicklung",
+      "check_command": "nvim",
+      "sources": {
+        "apt": {
+          "packages": [
+            "neovim"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "neovim"
+          ]
+        }
+      }
+    },
+    {
+      "id": "build-tools",
+      "name": "Compiler und Bauwerkzeuge",
+      "name_en": "Compiler and build tools",
+      "description": "gcc, make und Zubehör zum Übersetzen von Quelltext",
+      "description_en": "gcc, make and friends for compiling source code",
+      "category": "entwicklung",
+      "sources": {
+        "apt": {
+          "packages": [
+            "build-essential"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "base-devel"
+          ]
+        }
+      }
+    },
+    {
+      "id": "python-tools",
+      "name": "Python-Werkzeuge",
+      "name_en": "Python tools",
+      "description": "pip und virtuelle Umgebungen",
+      "description_en": "pip and virtual environments",
+      "category": "entwicklung",
+      "sources": {
+        "apt": {
+          "packages": [
+            "python3-pip",
+            "python3-venv"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "python-pip",
+            "python-virtualenv"
+          ]
+        }
+      }
+    },
+    {
+      "id": "docker",
+      "name": "Docker",
+      "description": "Container ausführen und bauen",
+      "description_en": "Run and build containers",
+      "category": "entwicklung",
+      "check_command": "docker",
+      "post_install": "systemctl enable --now docker.service || true\nif [ -n \"${PKEXEC_UID:-}\" ]; then usermod -aG docker \"$(id -nu \"$PKEXEC_UID\")\" && echo \"Benutzer zur Gruppe docker hinzugefügt – neu anmelden nötig\"; fi",
+      "sources": {
+        "apt": {
+          "packages": [
+            "docker.io",
+            "docker-compose"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "docker",
+            "docker-compose"
+          ]
+        }
+      }
+    },
+    {
+      "id": "meld",
+      "name": "Meld",
+      "description": "Dateien und Ordner grafisch vergleichen",
+      "description_en": "Compare files and folders visually",
+      "category": "entwicklung",
+      "sources": {
+        "apt": {
+          "packages": [
+            "meld"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "meld"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.gnome.meld"
+        }
+      }
+    },
+    {
+      "id": "dbeaver",
+      "name": "DBeaver",
+      "description": "Datenbank-Werkzeug für viele Systeme",
+      "description_en": "Database tool for many systems",
+      "category": "entwicklung",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "io.dbeaver.DBeaverCommunity"
+        }
+      }
+    },
+    {
+      "id": "htop",
+      "name": "htop",
+      "description": "Prozessübersicht im Terminal",
+      "description_en": "Process overview in the terminal",
+      "category": "system",
+      "check_command": "htop",
+      "sources": {
+        "apt": {
+          "packages": [
+            "htop"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "htop"
+          ]
+        }
+      }
+    },
+    {
+      "id": "btop",
+      "name": "btop",
+      "description": "Bunte Systemüberwachung im Terminal",
+      "description_en": "Colourful system monitor for the terminal",
+      "category": "system",
+      "check_command": "btop",
+      "sources": {
+        "apt": {
+          "packages": [
+            "btop"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "btop"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fastfetch",
+      "name": "fastfetch",
+      "description": "Systeminformationen auf einen Blick",
+      "description_en": "System information at a glance",
+      "category": "system",
+      "check_command": "fastfetch",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fastfetch"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "fastfetch"
+          ]
+        }
+      }
+    },
+    {
+      "id": "gparted",
+      "name": "GParted",
+      "description": "Partitionen anlegen und verändern",
+      "description_en": "Create and modify partitions",
+      "category": "system",
+      "sources": {
+        "apt": {
+          "packages": [
+            "gparted"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "gparted"
+          ]
+        }
+      }
+    },
+    {
+      "id": "gnome-disks",
+      "name": "Laufwerke (GNOME Disks)",
+      "name_en": "Disks (GNOME Disks)",
+      "description": "Datenträger prüfen, formatieren und einbinden",
+      "description_en": "Check, format and mount drives",
+      "category": "system",
+      "sources": {
+        "apt": {
+          "packages": [
+            "gnome-disk-utility"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "gnome-disk-utility"
+          ]
+        }
+      }
+    },
+    {
+      "id": "synaptic",
+      "name": "Synaptic",
+      "description": "Klassische Paketverwaltung mit Oberfläche",
+      "description_en": "Classic package manager with a graphical interface",
+      "category": "system",
+      "sources": {
+        "apt": {
+          "packages": [
+            "synaptic"
+          ]
+        }
+      }
+    },
+    {
+      "id": "gnome-tweaks",
+      "name": "Optimierungen (GNOME Tweaks)",
+      "name_en": "Tweaks (GNOME Tweaks)",
+      "description": "Versteckte Einstellungen des GNOME-Desktops",
+      "description_en": "Hidden settings of the GNOME desktop",
+      "category": "system",
+      "sources": {
+        "apt": {
+          "packages": [
+            "gnome-tweaks"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "gnome-tweaks"
+          ]
+        }
+      }
+    },
+    {
+      "id": "virt-manager",
+      "name": "Virtual Machine Manager",
+      "description": "Virtuelle Maschinen mit KVM/QEMU",
+      "description_en": "Virtual machines with KVM/QEMU",
+      "category": "system",
+      "sources": {
+        "apt": {
+          "packages": [
+            "virt-manager",
+            "qemu-system",
+            "libvirt-daemon-system"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "virt-manager",
+            "qemu-desktop",
+            "libvirt",
+            "dnsmasq"
+          ]
+        }
+      }
+    },
+    {
+      "id": "virtualbox",
+      "name": "VirtualBox",
+      "description": "Virtuelle Maschinen von Oracle",
+      "description_en": "Oracle's virtual machines",
+      "category": "system",
+      "sources": {
+        "apt": {
+          "packages": [
+            "virtualbox",
+            "virtualbox-qt"
+          ],
+          "components": [
+            "contrib"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "virtualbox",
+            "virtualbox-host-modules-arch"
+          ]
+        }
+      }
+    },
+    {
+      "id": "gnome-boxes",
+      "name": "Boxen (GNOME Boxes)",
+      "name_en": "Boxes (GNOME Boxes)",
+      "description": "Virtuelle Maschinen ohne Fachwissen",
+      "description_en": "Virtual machines without the expertise",
+      "category": "system",
+      "sources": {
+        "apt": {
+          "packages": [
+            "gnome-boxes"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "gnome-boxes"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.gnome.Boxes"
+        }
+      }
+    },
+    {
+      "id": "keepassxc",
+      "name": "KeePassXC",
+      "description": "Passwortsafe in einer lokalen Datei",
+      "description_en": "Password safe in a local file",
+      "category": "sicherheit",
+      "sources": {
+        "apt": {
+          "packages": [
+            "keepassxc"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "keepassxc"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.keepassxc.KeePassXC"
+        }
+      }
+    },
+    {
+      "id": "bitwarden",
+      "name": "Bitwarden",
+      "description": "Passwortverwaltung mit Abgleich über mehrere Geräte",
+      "description_en": "Password manager syncing across devices",
+      "category": "sicherheit",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "pacman": {
+          "packages": [
+            "bitwarden"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.bitwarden.desktop"
+        }
+      }
+    },
+    {
+      "id": "timeshift",
+      "name": "Timeshift",
+      "description": "Systemschnappschüsse zum Zurückrollen",
+      "description_en": "System snapshots you can roll back to",
+      "category": "sicherheit",
+      "sources": {
+        "apt": {
+          "packages": [
+            "timeshift"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "timeshift"
+          ]
+        }
+      }
+    },
+    {
+      "id": "deja-dup",
+      "name": "Datensicherung (Déjà Dup)",
+      "name_en": "Backups (Déjà Dup)",
+      "description": "Einfache, verschlüsselte Sicherungen",
+      "description_en": "Simple, encrypted backups",
+      "category": "sicherheit",
+      "sources": {
+        "apt": {
+          "packages": [
+            "deja-dup"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "deja-dup"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.gnome.DejaDup"
+        }
+      }
+    },
+    {
+      "id": "veracrypt",
+      "name": "VeraCrypt",
+      "description": "Verschlüsselte Container und Laufwerke",
+      "description_en": "Encrypted containers and drives",
+      "category": "sicherheit",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "com.veracrypt.VeraCrypt"
+        }
+      }
+    },
+    {
+      "id": "rsync",
+      "name": "rsync",
+      "description": "Dateien und Ordner zuverlässig abgleichen",
+      "description_en": "Sync files and folders reliably",
+      "category": "sicherheit",
+      "check_command": "rsync",
+      "sources": {
+        "apt": {
+          "packages": [
+            "rsync"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "rsync"
+          ]
+        }
+      }
+    },
+    {
+      "id": "steam",
+      "name": "Steam",
+      "description": "Spieleplattform von Valve",
+      "description_en": "Valve's gaming platform",
+      "category": "spiele",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "pacman": {
+          "packages": [
+            "steam"
+          ]
+        },
+        "flatpak": {
+          "ref": "com.valvesoftware.Steam"
+        }
+      }
+    },
+    {
+      "id": "lutris",
+      "name": "Lutris",
+      "description": "Spiele aus vielen Quellen unter einem Dach",
+      "description_en": "Games from many sources under one roof",
+      "category": "spiele",
+      "sources": {
+        "apt": {
+          "packages": [
+            "lutris"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "lutris"
+          ]
+        },
+        "flatpak": {
+          "ref": "net.lutris.Lutris"
+        }
+      }
+    },
+    {
+      "id": "heroic",
+      "name": "Heroic Games Launcher",
+      "description": "Epic Games und GOG unter Linux",
+      "description_en": "Epic Games and GOG on Linux",
+      "category": "spiele",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "flatpak": {
+          "ref": "com.heroicgameslauncher.hgl"
+        }
+      }
+    },
+    {
+      "id": "retroarch",
+      "name": "RetroArch",
+      "description": "Emulatoren für alte Spielkonsolen",
+      "description_en": "Emulators for classic game consoles",
+      "category": "spiele",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
+        "apt": {
+          "packages": [
+            "retroarch"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "retroarch"
+          ]
+        },
+        "flatpak": {
+          "ref": "org.libretro.RetroArch"
+        }
+      }
+    },
+    {
+      "id": "flatpak-basis",
+      "name": "Flatpak mit Flathub",
+      "name_en": "Flatpak with Flathub",
+      "description": "Zusätzliche Paketquelle für aktuelle Programme",
+      "description_en": "Extra package source for up-to-date programs",
+      "category": "grundlagen",
+      "check_command": "flatpak",
+      "post_install": "flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo",
+      "sources": {
+        "apt": {
+          "packages": [
+            "flatpak"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "flatpak"
+          ]
+        }
+      }
+    },
+    {
+      "id": "gnome-software-flatpak",
+      "name": "Flatpak in „Software“ einbinden",
+      "name_en": "Flatpak in GNOME Software",
+      "description": "Flathub-Programme tauchen in der Software-Verwaltung auf",
+      "description_en": "Flathub programs show up in the software manager",
+      "category": "grundlagen",
+      "sources": {
+        "apt": {
+          "packages": [
+            "gnome-software-plugin-flatpak"
+          ]
+        }
+      }
+    },
+    {
+      "id": "codecs",
+      "name": "Multimedia-Codecs",
+      "name_en": "Multimedia codecs",
+      "description": "Zusätzliche Formate für Video und Audio",
+      "description_en": "Additional video and audio formats",
+      "category": "grundlagen",
+      "sources": {
+        "apt": {
+          "packages": [
+            "libavcodec-extra",
+            "ffmpeg"
+          ],
+          "components": [
+            "contrib",
+            "non-free"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "ffmpeg",
+            "gst-plugins-good",
+            "gst-plugins-bad",
+            "gst-plugins-ugly",
+            "gst-libav"
+          ]
+        }
+      }
+    },
+    {
+      "id": "archive-tools",
+      "name": "Archivformate",
+      "name_en": "Archive formats",
+      "description": "zip, 7z, rar und Konsorten entpacken",
+      "description_en": "Extract zip, 7z, rar and the rest",
+      "category": "grundlagen",
+      "sources": {
+        "apt": {
+          "packages": [
+            "p7zip-full",
+            "unzip",
+            "zip",
+            "unrar-free"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "p7zip",
+            "unzip",
+            "zip",
+            "unarchiver"
+          ]
+        }
+      }
+    },
+    {
+      "id": "terminal-basics",
+      "name": "Terminal-Grundausstattung",
+      "name_en": "Terminal essentials",
+      "description": "curl, wget, git, nano und ein paar bequeme Helfer",
+      "description_en": "curl, wget, git, nano and a few handy helpers",
+      "category": "grundlagen",
+      "sources": {
+        "apt": {
+          "packages": [
+            "curl",
+            "wget",
+            "git",
+            "nano",
+            "tree",
+            "ncdu",
+            "ripgrep"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "curl",
+            "wget",
+            "git",
+            "nano",
+            "tree",
+            "ncdu",
+            "ripgrep"
+          ]
+        }
+      }
+    },
+    {
+      "id": "firmware-nonfree",
+      "name": "Unfreie Firmware",
+      "name_en": "Non-free firmware",
+      "description": "Treiberdateien für WLAN, Bluetooth und Grafik",
+      "description_en": "Driver files for Wi-Fi, Bluetooth and graphics",
+      "category": "grundlagen",
+      "sources": {
+        "apt": {
+          "packages": [
+            "firmware-linux",
+            "firmware-iwlwifi",
+            "firmware-realtek"
+          ],
+          "components": [
+            "contrib",
+            "non-free",
+            "non-free-firmware"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "linux-firmware"
+          ]
+        }
+      }
+    },
+    {
+      "id": "kompatible-schriften",
+      "name": "Schriften für Office-Dokumente",
+      "name_en": "Fonts for office documents",
+      "description": "Freier Ersatz für Arial, Times New Roman, Calibri und Cambria – gleiche Zeilen- und Seitenumbrüche",
+      "description_en": "Free stand-ins for Arial, Times New Roman, Calibri and Cambria — identical line and page breaks",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-liberation",
+            "fonts-crosextra-carlito",
+            "fonts-crosextra-caladea"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "ttf-liberation",
+            "ttf-carlito",
+            "ttf-caladea"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-noto",
+      "name": "Noto – Schriften für alle Sprachen",
+      "name_en": "Noto — fonts for every language",
+      "description": "Deckt nahezu jedes Schriftsystem ab; verhindert leere Kästchen statt Zeichen",
+      "description_en": "Covers nearly every writing system; stops missing characters showing as boxes",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-noto-core"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "noto-fonts"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-noto-cjk",
+      "name": "Noto CJK – Chinesisch, Japanisch, Koreanisch",
+      "name_en": "Noto CJK — Chinese, Japanese, Korean",
+      "description": "Ostasiatische Schriftzeichen, rund 300 MB",
+      "description_en": "East Asian characters, around 300 MB",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-noto-cjk"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "noto-fonts-cjk"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-emoji",
+      "name": "Emoji in Farbe",
+      "name_en": "Colour emoji",
+      "description": "Emoji werden bunt dargestellt statt als schwarzweiße Umrisse",
+      "description_en": "Emoji show up in colour instead of black-and-white outlines",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-noto-color-emoji"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "noto-fonts-emoji"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-dejavu",
+      "name": "DejaVu",
+      "name_en": "DejaVu",
+      "description": "Solide Grundausstattung mit großem Zeichenvorrat",
+      "description_en": "Solid all-rounder with a large character set",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-dejavu"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "ttf-dejavu"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-freefont",
+      "name": "GNU FreeFont & Liberation-Klassiker",
+      "name_en": "GNU FreeFont and Liberation classics",
+      "description": "Freie Nachbauten der klassischen PostScript-Schriften",
+      "description_en": "Free rebuilds of the classic PostScript fonts",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-freefont-ttf",
+            "fonts-croscore"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "gnu-free-fonts",
+            "ttf-croscore"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-libertine",
+      "name": "Linux Libertine",
+      "name_en": "Linux Libertine",
+      "description": "Serifenschrift für Bücher, Briefe und wissenschaftliche Arbeiten",
+      "description_en": "Serif family for books, letters and academic writing",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-linuxlibertine"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "ttf-linux-libertine"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-ui",
+      "name": "Inter, Roboto, Open Sans & Lato",
+      "name_en": "Inter, Roboto, Open Sans and Lato",
+      "description": "Moderne serifenlose Schriften für Oberflächen, Webseiten und Folien",
+      "description_en": "Modern sans-serif faces for interfaces, web pages and slides",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-inter",
+            "fonts-roboto",
+            "fonts-open-sans",
+            "fonts-lato"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "inter-font",
+            "ttf-roboto",
+            "ttf-opensans",
+            "ttf-lato"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-ubuntu",
+      "name": "Ubuntu-Schriften",
+      "name_en": "Ubuntu fonts",
+      "description": "Die eigenwillige Hausschrift von Ubuntu, auch als dicktengleiche Fassung",
+      "description_en": "Ubuntu's distinctive house font, monospace variant included",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-ubuntu"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "ttf-ubuntu-font-family"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-code",
+      "name": "Programmierschriften: Fira Code & JetBrains Mono",
+      "name_en": "Coding fonts: Fira Code and JetBrains Mono",
+      "description": "Dicktengleich mit Ligaturen – aus != wird ein einziges Zeichen",
+      "description_en": "Monospace with ligatures — != becomes a single glyph",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-firacode",
+            "fonts-jetbrains-mono"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "ttf-fira-code",
+            "ttf-jetbrains-mono"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-code-mehr",
+      "name": "Weitere Programmierschriften",
+      "name_en": "More coding fonts",
+      "description": "Cascadia Code, Hack, Inconsolata, Anonymous Pro und Source Code Pro",
+      "description_en": "Cascadia Code, Hack, Inconsolata, Anonymous Pro and Source Code Pro",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-cascadia-code",
+            "fonts-hack",
+            "fonts-inconsolata",
+            "fonts-anonymous-pro"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "ttf-cascadia-code",
+            "ttf-hack",
+            "ttf-inconsolata",
+            "ttf-anonymous-pro",
+            "adobe-source-code-pro-fonts"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-terminus",
+      "name": "Terminus",
+      "name_en": "Terminus",
+      "description": "Pixelschrift fürs Terminal, auch auf kleinen Größen gut lesbar",
+      "description_en": "Bitmap font for the terminal, legible even at small sizes",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-terminus"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "terminus-font"
+          ]
+        }
+      }
+    },
+    {
+      "id": "schriften-symbole",
+      "name": "Symbolschriften für die Konsole",
+      "name_en": "Symbol fonts for the console",
+      "description": "Font Awesome, Powerline und Nerd-Font-Symbole für schicke Eingabeaufforderungen",
+      "description_en": "Font Awesome, Powerline and Nerd Font symbols for fancy shell prompts",
+      "category": "schriften",
+      "sources": {
+        "apt": {
+          "packages": [
+            "fonts-font-awesome",
+            "fonts-powerline"
+          ]
+        },
+        "pacman": {
+          "packages": [
+            "otf-font-awesome",
+            "powerline-fonts",
+            "ttf-nerd-fonts-symbols"
+          ]
+        }
+      }
+    }
+  ]
+}

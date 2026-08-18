@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SilentInstaller – Wortmarke für hellen Untergrund.
+  Das Symbol behält seinen blauen Kasten, der Schriftzug steht in #3c2a42
+  und #0072b5. Für Dokumente und Webseiten mit weißem Hintergrund.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340">
+  <defs>
+    <linearGradient id="grund" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1eadf4"/>
+      <stop offset="1" stop-color="#0072b5"/>
+    </linearGradient>
+    <radialGradient id="tiefe" cx="0.82" cy="0.9" r="0.85">
+      <stop offset="0" stop-color="#3c2a42" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#3c2a42" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g transform="translate(40,42) scale(0.5)">
+    <rect width="512" height="512" rx="112" fill="url(#grund)"/>
+    <rect width="512" height="512" rx="112" fill="url(#tiefe)"/>
+    <g fill="#ffffff">
+      <rect x="226" y="92" width="60" height="38" rx="12"/>
+      <rect x="226" y="144" width="60" height="38" rx="12"/>
+      <rect x="226" y="196" width="60" height="40" rx="12"/>
+      <path d="M172 216 H340 L256 286 Z"/>
+    </g>
+    <path fill="#ffffff" fill-rule="evenodd" d="
+      M152 310 H360 A22 22 0 0 1 382 332 V400 A22 22 0 0 1 360 422 H152 A22 22 0 0 1 130 400 V332 A22 22 0 0 1 152 310 Z
+      M224 366 A32 32 0 1 0 160 366 A32 32 0 1 0 224 366 Z
+      M204 366 A12 12 0 1 0 180 366 A12 12 0 1 0 204 366 Z
+      M263 340 H347 A9 9 0 0 1 347 358 H263 A9 9 0 0 1 263 340 Z
+      M263 374 H347 A9 9 0 0 1 347 392 H263 A9 9 0 0 1 263 374 Z"/>
+  </g>
+
+  <text x="330" y="215"
+        font-family="Liberation Sans, Arial, Helvetica, sans-serif"
+        font-size="124" letter-spacing="-2">
+    <tspan font-weight="400" fill="#3c2a42">Silent</tspan><tspan font-weight="700" fill="#0072b5">Installer</tspan>
+  </text>
+</svg>
