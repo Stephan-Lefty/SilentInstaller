@@ -43,6 +43,26 @@ hell oder dunkel.
 
 ## Installation
 
+### Debian, Ubuntu, Linux Mint … – als Paket
+
+```bash
+sudo apt install ./silentinstaller_1.2.0_all.deb
+```
+
+Das Paket bringt alle Abhängigkeiten mit, legt den Menüeintrag an und meldet
+das Symbol beim System an. Danach genügt `silentinstaller` im Terminal oder der
+Eintrag im Anwendungsmenü. Entfernen mit `sudo apt remove silentinstaller`.
+
+Das Paket lässt sich aus dem Quelltext selbst bauen – auch auf einem
+Arch-System, solange `dpkg-deb` vorhanden ist:
+
+```bash
+./build-deb.sh              # ergibt dist/silentinstaller_<version>_all.deb
+./build-deb.sh --pruefen    # baut und zeigt Steuerdatei und Inhalt
+```
+
+### Aus dem Quelltext – alle Systeme
+
 ```bash
 git clone https://github.com/Stephan-Lefty/SilentInstaller.git
 cd SilentInstaller

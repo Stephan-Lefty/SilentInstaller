@@ -8,6 +8,11 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 
 ### Neu
 
+- **Debian-Paket.** `./build-deb.sh` baut ein installierbares
+  `silentinstaller_<version>_all.deb` mit Menüeintrag, Symbolen im
+  hicolor-Thema und allen Abhängigkeiten. Das Skript läuft auch auf einem
+  Arch-System, solange `dpkg-deb` vorhanden ist.
+
 - **Benutzername in angezeigten Pfaden ersetzt.** Wo die Oberfläche einen Pfad
   im eigenen Verzeichnis nennt, steht jetzt `/home/USER/…` statt des echten
   Namens. So lässt sich ein Fenster zeigen oder abfotografieren, ohne ihn
