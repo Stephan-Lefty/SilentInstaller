@@ -527,6 +527,7 @@ DEFAULT_SETTINGS = {
     "purge_on_remove": False,
     "language": "auto",
     "theme": "auto",
+    "check_updates": True,
 }
 
 

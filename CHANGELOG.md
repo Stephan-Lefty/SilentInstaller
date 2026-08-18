@@ -4,6 +4,22 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.3.0] – 2026-08-18
+
+### Neu
+
+- **Hinweis auf neue Fassungen.** Beim Start sieht SilentInstaller höchstens
+  einmal am Tag bei GitHub nach, ob es etwas Neueres gibt, und blendet
+  gegebenenfalls „Fassung X ist verfügbar“ mit einem Knopf zur Release-Seite
+  ein. Gibt es nichts Neues, bleibt es still. Heruntergeladen oder installiert
+  wird nichts – das entscheidet der Benutzer selbst.
+  Über das Menü lässt sich jederzeit von Hand nachsehen; dann kommt auch eine
+  Rückmeldung, wenn schon alles aktuell ist. In den Einstellungen abschaltbar,
+  weil dabei eine Verbindung zu GitHub aufgebaut wird. Ohne Netz, bei
+  Zeitüberschreitung oder unerwarteter Antwort scheitert die Abfrage still.
+- **Fassung neben dem Namen.** Fenstertitel und Kopfleiste nennen jetzt
+  „SilentInstaller <Fassung>“.
+
 ## [1.2.1] – 2026-08-18
 
 ### Behoben
@@ -163,6 +179,7 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Starter `silentinstaller.sh`, der fehlende GTK4-Abhängigkeiten nachrüstet,
   sowie `install.sh` für den Menüeintrag.
 
+[1.3.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.0
 [1.2.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.2.1
 [1.2.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.1.0

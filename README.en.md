@@ -46,7 +46,7 @@ light or dark.
 ### Debian, Ubuntu, Linux Mint … — as a package
 
 ```bash
-sudo apt install ./silentinstaller_1.2.1_all.deb
+sudo apt install ./silentinstaller_1.3.0_all.deb
 ```
 
 The package pulls in every dependency, adds the menu entry and registers the
@@ -78,6 +78,26 @@ For a permanent menu entry:
 ./install.sh            # into ~/.local/share/silentinstaller
 ./install.sh uninstall  # remove again
 ```
+
+### Updating
+
+At startup SilentInstaller asks GitHub at most once a day whether a newer
+version exists and tells you. Nothing is downloaded — that stays your decision.
+If you would rather not, switch it off under *Preferences ▸ Installation*; you
+can still check by hand from the menu.
+
+Updating works the same way as installing:
+
+```bash
+# Debian, Ubuntu and friends — fetch the new version from the releases page
+sudo apt install ./silentinstaller_<new-version>_all.deb
+
+# From source
+cd SilentInstaller && git pull && ./install.sh
+```
+
+Your own catalog, profiles and settings survive this — they live in
+`~/.config/silentinstaller/` and are left untouched.
 
 ### Requirements
 

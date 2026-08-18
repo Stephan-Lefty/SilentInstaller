@@ -48,7 +48,7 @@ hell oder dunkel.
 ### Debian, Ubuntu, Linux Mint … – als Paket
 
 ```bash
-sudo apt install ./silentinstaller_1.2.1_all.deb
+sudo apt install ./silentinstaller_1.3.0_all.deb
 ```
 
 Das Paket bringt alle Abhängigkeiten mit, legt den Menüeintrag an und meldet
@@ -80,6 +80,26 @@ Für einen dauerhaften Menüeintrag:
 ./install.sh            # nach ~/.local/share/silentinstaller
 ./install.sh uninstall  # wieder entfernen
 ```
+
+### Aktualisieren
+
+SilentInstaller sieht beim Start höchstens einmal am Tag bei GitHub nach, ob es
+eine neuere Fassung gibt, und sagt Bescheid. Heruntergeladen wird nichts – das
+entscheidest du. Wer das nicht möchte, schaltet es unter *Einstellungen ▸
+Installation* ab; über das Menü lässt sich weiterhin von Hand nachsehen.
+
+Aktualisiert wird auf demselben Weg wie installiert:
+
+```bash
+# Debian, Ubuntu & Co. – neue Fassung von der Release-Seite holen
+sudo apt install ./silentinstaller_<neue-fassung>_all.deb
+
+# Aus dem Quelltext
+cd SilentInstaller && git pull && ./install.sh
+```
+
+Der eigene Katalog, die Profile und die Einstellungen bleiben dabei erhalten –
+sie liegen in `~/.config/silentinstaller/` und werden nicht angefasst.
 
 ### Voraussetzungen
 

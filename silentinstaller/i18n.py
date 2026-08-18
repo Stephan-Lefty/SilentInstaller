@@ -199,6 +199,22 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         'Eine Profildatei und eine ausgelagerte Auswahl sind identisch aufgebaut. Kopierst du eine mitgebrachte Datei in das Profilverzeichnis, steht sie beim nächsten Start unter »Profil laden«. Umgekehrt kannst du eine Profildatei direkt weitergeben.':
             'A profile file and an exported selection are built identically. Copy a file you brought along into the profile directory and it appears under “Load profile” on the next start. Conversely, you can pass a profile file straight on.',
 
+        # -- Neue Fassungen --------------------------------------------------
+        'Fassung {fassung} ist verfügbar':
+            'Version {fassung} is available',
+        'Ansehen':
+            'Show',
+        'Sie haben bereits die neueste Fassung':
+            'You already have the latest version',
+        'Auf neue Fassung prüfen':
+            'Check for a new version',
+        'Fragt bei GitHub nach, ob es eine neuere Fassung gibt. Heruntergeladen wird nichts.':
+            'Asks GitHub whether a newer version exists. Nothing gets downloaded.',
+        'Beim Start nach neuen Fassungen sehen':
+            'Look for new versions at startup',
+        'Fragt höchstens einmal am Tag bei GitHub nach. Es wird nur gelesen und gemeldet, nie etwas heruntergeladen.':
+            'Asks GitHub at most once a day. It only reads and reports, it never downloads anything.',
+
         # -- Einstellungen ---------------------------------------------------
         "Allgemein": "General",
         "Darstellung": "Appearance",

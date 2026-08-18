@@ -13,7 +13,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk  # noqa: E402
 
 from . import APP_ID, __version__  # noqa: E402
-from . import backends, catalog as catalog_module, runner  # noqa: E402
+from . import backends, catalog as catalog_module, runner, update  # noqa: E402
 from .catalog import App, Catalog, CatalogError  # noqa: E402
 from .distro import FAMILY_UNKNOWN, Distro  # noqa: E402
 from .editor import AppEditor  # noqa: E402
@@ -67,6 +67,7 @@ class MainWindow(Adw.ApplicationWindow):
         self._build_ui()
         self.rebuild_list()
         self._create_initial_profile()
+        self._pruefe_auf_neue_fassung()
 
     def _create_initial_profile(self) -> None:
         """Sichert beim allerersten Start den vorgefundenen Bestand als Profil.
@@ -117,6 +118,47 @@ class MainWindow(Adw.ApplicationWindow):
         self._toast(message)
         return False
 
+    # -- Neue Fassungen ----------------------------------------------------
+
+    def _pruefe_auf_neue_fassung(self, von_hand: bool = False) -> None:
+        """Sieht bei GitHub nach, ob es etwas Neueres gibt.
+
+        Von selbst höchstens einmal am Tag und nur, wenn es der Benutzer
+        eingeschaltet gelassen hat. Auf Zuruf über das Menü immer.
+        """
+        if not von_hand:
+            if not self.settings.get("check_updates", True):
+                return
+            if update.heute_schon_geprueft(self.settings.get("last_update_check", "")):
+                return
+            self.settings["last_update_check"] = date.today().isoformat()
+            catalog_module.save_settings(self.settings)
+
+        update.pruefe_im_hintergrund(
+            __version__,
+            lambda gefunden: GLib.idle_add(self._neue_fassung_gemeldet, gefunden, von_hand),
+        )
+
+    def _neue_fassung_gemeldet(self, fassung: str | None, von_hand: bool) -> bool:
+        if fassung:
+            toast = Adw.Toast(
+                title=_("Fassung {fassung} ist verfügbar").format(fassung=fassung),
+                timeout=10,
+                button_label=_("Ansehen"),
+            )
+            toast.connect("button-clicked", lambda *_a: self._oeffne_releases())
+            self.toasts.add_toast(toast)
+        elif von_hand:
+            # Ohne Rückmeldung wüsste niemand, ob überhaupt nachgesehen wurde.
+            self._toast(_("Sie haben bereits die neueste Fassung"))
+        return False
+
+    def _oeffne_releases(self) -> None:
+        if hasattr(Gtk, "UriLauncher"):
+            Gtk.UriLauncher(uri=update.RELEASE_SEITE).launch(self, None, None)
+        else:
+            Gio.AppInfo.launch_default_for_uri(update.RELEASE_SEITE, None)
+
     # -- Aufbau ------------------------------------------------------------
 
     def _build_actions(self) -> None:
@@ -131,6 +173,7 @@ class MainWindow(Adw.ApplicationWindow):
             ("import-selection", self._on_import_selection),
             ("show-script", lambda *_a: self._show_script_preview()),
             ("preferences", self._on_preferences),
+            ("check-update", lambda *_a: self._pruefe_auf_neue_fassung(von_hand=True)),
             ("about", self._on_about),
         ):
             action = Gio.SimpleAction.new(name, None)
@@ -331,6 +374,9 @@ class MainWindow(Adw.ApplicationWindow):
             (
                 "",
                 [
+                    (_("Auf neue Fassung prüfen"), "win.check-update",
+                     _("Fragt bei GitHub nach, ob es eine neuere Fassung gibt. "
+                       "Heruntergeladen wird nichts.")),
                     (_("Einstellungen"), "win.preferences",
                      _("Sprache, Erscheinungsbild, Flatpak-Vorrang und Speicherorte")),
                     (_("Über SilentInstaller"), "win.about", ""),
@@ -974,6 +1020,17 @@ class MainWindow(Adw.ApplicationWindow):
         )
         purge_row.connect("notify::active", self._on_purge_toggle)
         group.add(purge_row)
+
+        update_row = Adw.SwitchRow(
+            title=_("Beim Start nach neuen Fassungen sehen"),
+            subtitle=_(
+                "Fragt höchstens einmal am Tag bei GitHub nach. Es wird nur "
+                "gelesen und gemeldet, nie etwas heruntergeladen."
+            ),
+            active=bool(self.settings.get("check_updates", True)),
+        )
+        update_row.connect("notify::active", self._on_update_toggle)
+        group.add(update_row)
         page.add(group)
 
         paths = Adw.PreferencesGroup(title=_("Dateien"))
@@ -1044,6 +1101,10 @@ class MainWindow(Adw.ApplicationWindow):
         self.settings["prefer_flatpak"] = row.get_active()
         catalog_module.save_settings(self.settings)
         self.rebuild_list()
+
+    def _on_update_toggle(self, row: Adw.SwitchRow, _param) -> None:
+        self.settings["check_updates"] = row.get_active()
+        catalog_module.save_settings(self.settings)
 
     def _on_purge_toggle(self, row: Adw.SwitchRow, _param) -> None:
         self.settings["purge_on_remove"] = row.get_active()
