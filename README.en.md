@@ -46,7 +46,7 @@ light or dark.
 ### Debian, Ubuntu, Linux Mint … — as a package
 
 ```bash
-sudo apt install ./silentinstaller_1.2.0_all.deb
+sudo apt install ./silentinstaller_1.2.1_all.deb
 ```
 
 The package pulls in every dependency, adds the menu entry and registers the

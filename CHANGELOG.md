@@ -4,7 +4,24 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
-## [1.2.0] – 2026-08-18
+## [1.2.1] – 2026-08-18
+
+### Behoben
+
+- **`install.sh` stieß Plasmas Menü-Datenbank nie an.** Unter KDE erschien der
+  Menüeintrag deshalb erst nach einer Neuanmeldung. Der Installer ruft jetzt
+  `kbuildsycoca6` beziehungsweise `kbuildsycoca5` auf, dazu
+  `xdg-desktop-menu forceupdate` für XFCE und LXQt. Das Debian-Paket braucht
+  das nicht: Es installiert systemweit, und dort liest KDE neue Einträge selbst
+  ein – ein Aufruf als root ginge ohnehin an der Sitzung des Benutzers vorbei.
+- **`install.sh` meldete auch dann Erfolg, wenn nichts ankam.** Am Ende wird
+  jetzt geprüft, ob Menüeintrag und Symbol wirklich liegen, und unter KDE, ob
+  das Symbol über seinen Namen auffindbar ist. Fehlt etwas, sagt das Skript es.
+- Das Einstellungsfenster trug den englischen Titel „Preferences“, auch bei
+  deutscher Oberfläche – `Adw.PreferencesWindow` bekam keinen eigenen Titel.
+- Lag das Benutzerverzeichnis unmittelbar unter der Wurzel, etwa `/root`,
+  entstand aus dem Platzhalter für den Benutzernamen der unsinnige Pfad
+  `/USER/…`. In diesem Fall wird jetzt die Tilde verwendet.
 
 ### Neu
 
@@ -15,6 +32,11 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
   deb822-Quellen, alle vier Fremdquellen mit eigenem Signaturschlüssel sowie
   eine Probeinstallation aus einer Fremdquelle laufen durch. Die Oberfläche
   startet unter Debian 13 und findet für alle 84 Einträge eine Quelle.
+
+## [1.2.0] – 2026-08-18
+
+### Neu
+
 - **Debian-Paket.** `./build-deb.sh` baut ein installierbares
   `silentinstaller_<version>_all.deb` mit Menüeintrag, Symbolen im
   hicolor-Thema und allen Abhängigkeiten. Das Skript läuft auch auf einem
@@ -74,21 +96,6 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
   dafür war keine Sonderbehandlung nötig, der vorhandene Weg trägt sie mit.
 - Der Eintrag „Schriften für Office-Dokumente“ ist von der Grundausstattung in
   die neue Kategorie umgezogen.
-
-### Behoben
-
-- **`install.sh` stieß Plasmas Menü-Datenbank nie an.** Unter KDE erschien der
-  Eintrag deshalb erst nach einer Neuanmeldung. Der Installer ruft jetzt
-  `kbuildsycoca6` beziehungsweise `kbuildsycoca5` auf, dazu
-  `xdg-desktop-menu forceupdate` für XFCE und LXQt.
-- **`install.sh` meldete auch dann Erfolg, wenn nichts ankam.** Am Ende wird
-  jetzt geprüft, ob Menüeintrag und Symbol wirklich liegen, und unter KDE, ob
-  das Symbol über seinen Namen auffindbar ist. Fehlt etwas, sagt das Skript es.
-- Das Einstellungsfenster trug den englischen Titel „Preferences“, auch bei
-  deutscher Oberfläche – `Adw.PreferencesWindow` bekam keinen eigenen Titel.
-- Lag das Benutzerverzeichnis unmittelbar unter der Wurzel, etwa `/root`,
-  entstand aus dem Platzhalter für den Benutzernamen der unsinnige Pfad
-  `/USER/…`. In diesem Fall wird jetzt die Tilde verwendet.
 
 ## [1.1.0] – 2026-08-18
 
@@ -156,6 +163,7 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Starter `silentinstaller.sh`, der fehlende GTK4-Abhängigkeiten nachrüstet,
   sowie `install.sh` für den Menüeintrag.
 
+[1.2.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.2.1
 [1.2.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.1.0
 [1.0.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.0.0
