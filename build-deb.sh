@@ -170,7 +170,6 @@ chmod 0755 "$BAU/DEBIAN/postinst" "$BAU/DEBIAN/postrm"
 find "$BAU" -type d -exec chmod 0755 {} +
 find "$BAU" -type f -exec chmod 0644 {} +
 chmod 0755 "$BAU/usr/bin/$PAKET" "$BAU/DEBIAN/postinst" "$BAU/DEBIAN/postrm"
-chmod 0755 "$BAU/usr/share/$PAKET/silentinstaller.sh" 2>/dev/null || true
 
 # -- Bauen ------------------------------------------------------------------
 mkdir -p "$ZIEL"
