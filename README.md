@@ -311,6 +311,24 @@ Sie lassen sich genauso installieren wie entfernen.
 
 Alle Aufnahmen entstanden unter Debian 13.
 
+## Mitarbeiten
+
+Vor jeder Änderung sollten die Tests durchlaufen:
+
+```bash
+python3 -m unittest discover -s tests
+```
+
+Sie brauchen nichts außer Python und `bash` und laufen in unter einer Sekunde.
+Bei jedem Push laufen sie zusätzlich automatisch, dazu wird das Debian-Paket
+gebaut, wirklich installiert und gestartet – siehe
+[.github/workflows/tests.yml](.github/workflows/tests.yml).
+
+Wer einen Fehler behebt, ergänzt bitte einen Testfall dazu. Fast jeder
+vorhandene Fall steht für einen Fehler, der einmal wirklich aufgetreten ist;
+so bleibt er behoben. Was geprüft wird und was nicht, steht in
+[tests/README.md](tests/README.md).
+
 ## Lizenz
 
 MIT – siehe [LICENSE](LICENSE).
