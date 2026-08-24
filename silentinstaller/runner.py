@@ -82,6 +82,7 @@ def build_install_plan(items: list[Resolved], distro: Distro) -> Plan:
     pacman_apps: list[str] = []
     flatpak_refs: list[str] = []
     flatpak_apps: list[str] = []
+    snap_posten: list[Resolved] = []
     repos: list[tuple[Resolved, dict]] = []
     components: list[str] = []
     debs: list[Resolved] = []
@@ -97,6 +98,8 @@ def build_install_plan(items: list[Resolved], distro: Distro) -> Plan:
         elif item.kind == "pacman":
             pacman_packages.extend(item.packages)
             pacman_apps.append(item.app.id)
+        elif item.kind == "snap":
+            snap_posten.append(item)
         elif item.kind == "flatpak":
             flatpak_refs.extend(item.packages)
             flatpak_apps.append(item.app.id)
@@ -107,7 +110,10 @@ def build_install_plan(items: list[Resolved], distro: Distro) -> Plan:
         elif item.kind == "script":
             scripts.append(item)
 
-    needs_apt = bool(apt_packages or debs or repos or flatpak_refs) and distro.native_manager == "apt"
+    needs_apt = (
+        bool(apt_packages or debs or repos or flatpak_refs or snap_posten)
+        and distro.native_manager == "apt"
+    )
 
     if repos or (needs_apt and components):
         plan.steps.append(Step("Grundwerkzeuge für Fremdquellen bereitstellen", [
@@ -181,6 +187,36 @@ def build_install_plan(items: list[Resolved], distro: Distro) -> Plan:
             apps=[item.app.id],
         ))
 
+    if snap_posten:
+        # Snap kennt keine Sammelinstallation mit gemischten Schaltern, und
+        # »--classic« gilt immer nur für ein Paket. Deshalb einzeln.
+        einfach = [
+            paket for item in snap_posten if not item.classic for paket in item.packages
+        ]
+        klassisch = [
+            (item, paket) for item in snap_posten if item.classic for paket in item.packages
+        ]
+
+        if distro.native_manager == "apt":
+            plan.steps.append(Step(
+                "Snap bereitstellen",
+                ["command -v snap >/dev/null 2>&1 && return 0",
+                 "apt-get install -y snapd"],
+            ))
+
+        if einfach:
+            plan.steps.append(Step(
+                f"{len(einfach)} Programm(e) über Snap installieren",
+                _batch_install("snap install", dict.fromkeys(einfach)),
+                apps=[i.app.id for i in snap_posten if not i.classic],
+            ))
+        for item, paket in klassisch:
+            plan.steps.append(Step(
+                f"{item.app.name} über Snap installieren",
+                [f"snap install --classic {_q(paket)}"],
+                apps=[item.app.id],
+            ))
+
     if flatpak_refs:
         setup = ["command -v flatpak >/dev/null 2>&1 || {"]
         if distro.native_manager == "apt":
@@ -232,11 +268,14 @@ def build_remove_plan(items: list[Resolved], distro: Distro, purge: bool = False
 
     apt_packages: list[str] = []
     pacman_packages: list[str] = []
+    snap_packages: list[str] = []
     flatpak_refs: list[str] = []
     scripts: list[Resolved] = []
 
     for item in items:
-        if item.kind in ("apt", "deb"):
+        if item.kind == "snap":
+            snap_packages.extend(item.packages)
+        elif item.kind in ("apt", "deb"):
             apt_packages.extend(item.packages or item.data.get("packages", []))
         elif item.kind == "pacman":
             pacman_packages.extend(item.packages)
@@ -265,6 +304,15 @@ def build_remove_plan(items: list[Resolved], distro: Distro, purge: bool = False
                 f"{' '.join(_q(p) for p in dict.fromkeys(pacman_packages))}"
             ],
             apps=[i.app.id for i in items if i.kind == "pacman"],
+        ))
+
+    if snap_packages:
+        plan.steps.append(Step(
+            f"{len(snap_packages)} Programm(e) über Snap entfernen",
+            [
+                f"snap remove {' '.join(_q(p) for p in dict.fromkeys(snap_packages))}"
+            ],
+            apps=[i.app.id for i in items if i.kind == "snap"],
         ))
 
     if flatpak_refs:

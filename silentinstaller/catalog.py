@@ -30,7 +30,7 @@ SELECTION_VERSION = 1
 
 BUILTIN_CATALOG = Path(__file__).resolve().parent / "data" / "catalog.json"
 
-SOURCE_KINDS = ("apt", "pacman", "flatpak", "deb", "script")
+SOURCE_KINDS = ("apt", "pacman", "snap", "flatpak", "deb", "script")
 
 
 def config_dir() -> Path:

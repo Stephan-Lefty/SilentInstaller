@@ -19,9 +19,13 @@ hell oder dunkel.
 - **Ein Katalog, zwei Welten.** Jedes Programm kennt seine Paketnamen für APT
   *und* Pacman *und* Flathub. SilentInstaller wählt auf dem laufenden System
   automatisch die passende Quelle.
-- **Vier Quellenarten.** Distributionspakete (apt/pacman), Flatpak von Flathub,
-  direkte `.deb`-Downloads und Fremd-Repositorys mit Signaturschlüssel
+- **Fünf Quellenarten.** Distributionspakete (apt/pacman), Snap, Flatpak von
+  Flathub, direkte `.deb`-Downloads und Fremd-Repositorys mit Signaturschlüssel
   (Visual Studio Code, Signal, Brave, Vivaldi).
+- **Ubuntu wird ernst genommen.** Wo ein Paket unter Ubuntu anders heißt oder
+  fehlt, ist der richtige Name hinterlegt; wo `apt` dort stillschweigend einen
+  Snap unterschiebt, nimmt SilentInstaller ihn ausdrücklich und zeigt das auch
+  an. Linux Mint und Pop!\_OS erben diese Angaben automatisch.
 - **Eigene Programme pflegen.** Hinzufügen, bearbeiten und wieder herausnehmen
   direkt in der Oberfläche – ohne Texteditor. Deine Änderungen landen in
   `~/.config/silentinstaller/catalog.json`, die Mitlieferung bleibt unberührt.
@@ -48,7 +52,7 @@ hell oder dunkel.
 ### Debian, Ubuntu, Linux Mint … – als Paket
 
 ```bash
-sudo apt install ./silentinstaller_1.3.1_all.deb
+sudo apt install ./silentinstaller_1.4.0_all.deb
 ```
 
 Das Paket bringt alle Abhängigkeiten mit, legt den Menüeintrag an und meldet
@@ -210,6 +214,22 @@ bearbeitet, findet sie unter `~/.config/silentinstaller/catalog.json`:
 ```
 
 Ein Fremd-Repository für APT:
+
+Ein Paket, das auf einem Abkömmling anders heißt:
+
+```json
+"apt": {
+  "packages": ["firefox-esr"],
+  "je_distro": {
+    "ubuntu": { "packages": [] }
+  }
+},
+"snap": { "packages": ["firefox"] }
+```
+
+Die leere Liste schaltet APT für Ubuntu ab, sodass dort der Snap greift. Die
+speziellste Übereinstimmung gewinnt – ein Eintrag für `linuxmint` schlägt den
+für `ubuntu`, dieser den für `debian`.
 
 ```json
 "apt": {

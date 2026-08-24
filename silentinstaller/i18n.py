@@ -293,6 +293,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
             "spaces or commas.",
         "APT-Pakete (Debian & Co.)": "APT packages (Debian and friends)",
         "Pacman-Pakete (Arch & Co.)": "Pacman packages (Arch and friends)",
+        "Snap-Pakete (Ubuntu & Co.)": "Snap packages (Ubuntu and friends)",
+        "Snap bevorzugen": "Prefer Snap",
         "Flatpak-Kennung, z. B. org.gimp.GIMP": "Flatpak ID, e.g. org.gimp.GIMP",
         ".deb-Download-Adresse": ".deb download address",
         "Feinheiten": "Details",

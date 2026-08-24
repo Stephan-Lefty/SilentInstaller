@@ -18,9 +18,13 @@ light or dark.
 - **One catalog, two worlds.** Every program knows its package names for APT
   *and* Pacman *and* Flathub. SilentInstaller picks the right source for the
   system it is running on.
-- **Four kinds of sources.** Distribution packages (apt/pacman), Flatpak from
-  Flathub, direct `.deb` downloads, and third-party repositories with signing
-  keys (Visual Studio Code, Signal, Brave, Vivaldi).
+- **Five kinds of sources.** Distribution packages (apt/pacman), Snap, Flatpak
+  from Flathub, direct `.deb` downloads, and third-party repositories with
+  signing keys (Visual Studio Code, Signal, Brave, Vivaldi).
+- **Ubuntu taken seriously.** Where a package is named differently on Ubuntu or
+  missing entirely, the correct name is on file; where `apt` quietly substitutes
+  a snap, SilentInstaller uses it openly and says so. Linux Mint and Pop!\_OS
+  inherit these entries automatically.
 - **Curate your own list.** Add, edit and remove entries right in the interface,
   no text editor needed. Your changes go to
   `~/.config/silentinstaller/catalog.json`; the bundled list stays untouched.
@@ -46,7 +50,7 @@ light or dark.
 ### Debian, Ubuntu, Linux Mint … — as a package
 
 ```bash
-sudo apt install ./silentinstaller_1.3.1_all.deb
+sudo apt install ./silentinstaller_1.4.0_all.deb
 ```
 
 The package pulls in every dependency, adds the menu entry and registers the

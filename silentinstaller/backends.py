@@ -10,8 +10,8 @@ from .catalog import App, SOURCE_KINDS
 from .distro import Distro
 
 #: Reihenfolge, in der Quellen gewählt werden, wenn nichts anderes gesetzt ist.
-NATIVE_FIRST = ("apt", "pacman", "deb", "flatpak", "script")
-FLATPAK_FIRST = ("flatpak", "apt", "pacman", "deb", "script")
+NATIVE_FIRST = ("apt", "pacman", "snap", "deb", "flatpak", "script")
+FLATPAK_FIRST = ("flatpak", "apt", "pacman", "snap", "deb", "script")
 
 
 @dataclass
@@ -24,7 +24,7 @@ class Resolved:
 
     @property
     def packages(self) -> list[str]:
-        if self.kind in ("apt", "pacman"):
+        if self.kind in ("apt", "pacman", "snap"):
             return [str(p) for p in self.data.get("packages", [])]
         if self.kind == "flatpak":
             ref = self.data.get("ref")
@@ -32,10 +32,16 @@ class Resolved:
         return []
 
     @property
+    def classic(self) -> bool:
+        """Braucht dieses Snap-Paket den Zugriff aufs ganze System?"""
+        return self.kind == "snap" and bool(self.data.get("classic"))
+
+    @property
     def label(self) -> str:
         return {
             "apt": "APT",
             "pacman": "Pacman",
+            "snap": "Snap",
             "flatpak": "Flatpak",
             "deb": ".deb-Paket",
             "script": "Skript",
@@ -54,9 +60,38 @@ def resolve(app: App, distro: Distro, prefer_flatpak: bool = False) -> Resolved 
             continue
         seen.add(kind)
         data = app.sources.get(kind)
-        if data and distro.supports(kind):
-            return Resolved(app=app, kind=kind, data=dict(data))
+        if not data or not distro.supports(kind):
+            continue
+        aufgeloest = fuer_distro(data, distro)
+        # Eine Quelle lässt sich für ein bestimmtes System abschalten, indem
+        # ihre Paketliste dort leer bleibt – etwa weil das Paket unter Ubuntu
+        # gar nicht existiert und stattdessen der Snap genommen werden soll.
+        if kind in ("apt", "pacman", "snap") and not aufgeloest.get("packages"):
+            continue
+        return Resolved(app=app, kind=kind, data=aufgeloest)
     return None
+
+
+def fuer_distro(data: dict, distro: Distro) -> dict:
+    """Setzt distributionsabhängige Angaben ein.
+
+    Manche Paketnamen unterscheiden sich zwischen den Abkömmlingen einer
+    Familie: Der Browser heißt unter Debian »firefox-esr«, unter Ubuntu
+    »firefox«. Über ``je_distro`` lässt sich das hinterlegen, wobei die
+    speziellste Übereinstimmung gewinnt – ein Eintrag für Linux Mint schlägt
+    den für Ubuntu, dieser den für Debian.
+    """
+    ergebnis = dict(data)
+    varianten = ergebnis.pop("je_distro", None)
+    if not isinstance(varianten, dict):
+        return ergebnis
+
+    for kennung in distro.abstammung:
+        besonderheit = varianten.get(kennung)
+        if isinstance(besonderheit, dict):
+            ergebnis.update(besonderheit)
+            break
+    return ergebnis
 
 
 # -- Erkennung des Installationsstands -------------------------------------
@@ -78,12 +113,16 @@ class InstalledIndex:
 
     apt: set[str] = field(default_factory=set)
     pacman: set[str] = field(default_factory=set)
+    snap: set[str] = field(default_factory=set)
     flatpak: set[str] = field(default_factory=set)
+    #: Das System, auf das sich die Aufnahme bezieht – nötig, weil Paketnamen
+    #: sich zwischen Abkömmlingen unterscheiden.
+    distro: Distro = field(default_factory=Distro)
     _cache: dict[str, tuple[bool, str | None]] = field(default_factory=dict, repr=False)
 
     @classmethod
     def collect(cls, distro: Distro) -> "InstalledIndex":
-        index = cls()
+        index = cls(distro=distro)
         if "apt" in distro.managers and shutil.which("dpkg-query"):
             out = _run(
                 [
@@ -99,6 +138,14 @@ class InstalledIndex:
         if "pacman" in distro.managers:
             index.pacman = {
                 line.split(" ", 1)[0] for line in _run(["pacman", "-Qq"]).splitlines()
+            }
+        if "snap" in distro.managers:
+            # Die erste Zeile ist die Überschrift, die erste Spalte der Name.
+            out = _run(["snap", "list"])
+            index.snap = {
+                zeile.split()[0]
+                for zeile in out.splitlines()[1:]
+                if zeile.strip()
             }
         if "flatpak" in distro.managers:
             out = _run(["flatpak", "list", "--app", "--columns=application"])
@@ -123,11 +170,19 @@ class InstalledIndex:
         return state
 
     def _app_state_uncached(self, app: App) -> tuple[bool, str | None]:
-        for kind in ("apt", "pacman", "deb"):
+        for kind in ("apt", "pacman", "snap", "deb"):
             data = app.sources.get(kind)
             if not data:
                 continue
-            store = self.apt if kind in ("apt", "deb") else self.pacman
+            # Unter Ubuntu heißt der Browser anders als unter Debian – ohne
+            # diese Auflösung würde er dort nie als vorhanden erkannt.
+            data = fuer_distro(data, self.distro)
+            store = {
+                "apt": self.apt,
+                "deb": self.apt,
+                "pacman": self.pacman,
+                "snap": self.snap,
+            }[kind]
             packages = [str(p) for p in data.get("packages", [])]
             if packages and all(p in store for p in packages):
                 return True, kind

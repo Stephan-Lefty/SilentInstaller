@@ -22,6 +22,7 @@ PREFER_CHOICES = [
     ("", "Automatisch (nativ zuerst)"),
     ("apt", "APT bevorzugen"),
     ("pacman", "Pacman bevorzugen"),
+    ("snap", "Snap bevorzugen"),
     ("flatpak", "Flatpak bevorzugen"),
     ("deb", ".deb-Paket bevorzugen"),
 ]
@@ -121,9 +122,10 @@ class AppEditor(Adw.Window):
         )
         self._apt = Adw.EntryRow(title=esc(_("APT-Pakete (Debian & Co.)")))
         self._pacman = Adw.EntryRow(title=esc(_("Pacman-Pakete (Arch & Co.)")))
+        self._snap = Adw.EntryRow(title=_("Snap-Pakete (Ubuntu & Co.)"))
         self._flatpak = Adw.EntryRow(title=_("Flatpak-Kennung, z. B. org.gimp.GIMP"))
         self._deb = Adw.EntryRow(title=_(".deb-Download-Adresse"))
-        for row in (self._apt, self._pacman, self._flatpak, self._deb):
+        for row in (self._apt, self._pacman, self._snap, self._flatpak, self._deb):
             group.add(row)
         return group
 
@@ -178,6 +180,7 @@ class AppEditor(Adw.Window):
         self._pacman.set_text(
             " ".join((app.sources.get("pacman") or {}).get("packages", []))
         )
+        self._snap.set_text(" ".join((app.sources.get("snap") or {}).get("packages", [])))
         self._flatpak.set_text((app.sources.get("flatpak") or {}).get("ref", ""))
         self._deb.set_text((app.sources.get("deb") or {}).get("url", ""))
 
@@ -227,6 +230,13 @@ class AppEditor(Adw.Window):
             sources["apt"] = {"packages": packages}
         if packages := _split(self._pacman.get_text()):
             sources["pacman"] = {"packages": packages}
+        if packages := _split(self._snap.get_text()):
+            sources["snap"] = {"packages": packages}
+            # Ob das Paket den Zugriff aufs ganze System braucht, weiß nur der
+            # Store – eine vorhandene Angabe bleibt deshalb erhalten.
+            alt = (self._app.sources.get("snap") if self._app else None) or {}
+            if alt.get("classic"):
+                sources["snap"]["classic"] = True
         if ref := self._flatpak.get_text().strip():
             sources["flatpak"] = {"ref": ref}
         if url := self._deb.get_text().strip():
@@ -236,11 +246,11 @@ class AppEditor(Adw.Window):
         if self._app is not None:
             if "script" in self._app.sources:
                 sources["script"] = self._app.sources["script"]
-            for kind in ("apt", "deb"):
+            for kind in ("apt", "deb", "pacman", "snap"):
                 old = self._app.sources.get(kind, {})
                 if kind not in sources:
                     continue
-                for key in ("repo", "components", "packages"):
+                for key in ("repo", "components", "packages", "je_distro"):
                     if key in old and key not in sources[kind]:
                         sources[kind][key] = old[key]
 

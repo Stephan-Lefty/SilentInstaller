@@ -31,6 +31,8 @@ class Distro:
     version: str = ""
     family: str = FAMILY_UNKNOWN
     managers: set[str] = field(default_factory=set)
+    #: Inhalt von ID_LIKE – etwa ["ubuntu", "debian"] bei Linux Mint.
+    id_like: list[str] = field(default_factory=list)
 
     @property
     def native_manager(self) -> str | None:
@@ -44,8 +46,22 @@ class Distro:
     def pretty(self) -> str:
         return f"{self.name} {self.version}".strip()
 
+    @property
+    def abstammung(self) -> list[str]:
+        """Kennung und Herkunft, vom Speziellen zum Allgemeinen.
+
+        Für Linux Mint etwa ``["linuxmint", "ubuntu", "debian"]`` – so lässt
+        sich ein Paketname für Ubuntu hinterlegen, den Mint mitbenutzt.
+        """
+        kette = [self.id]
+        kette.extend(k for k in self.id_like if k not in kette)
+        return kette
+
+    def stammt_von(self, kennung: str) -> bool:
+        return kennung in self.abstammung
+
     def supports(self, kind: str) -> bool:
-        """Kann eine Quellen-Art (apt/pacman/flatpak/deb/script) genutzt werden?"""
+        """Kann eine Quellen-Art genutzt werden?"""
         if kind in ("apt", "pacman"):
             return kind == self.native_manager
         if kind == "deb":
@@ -54,6 +70,12 @@ class Distro:
             # Flatpak wird bei Bedarf nachinstalliert, gilt also auch dann als
             # nutzbar, wenn es noch nicht vorhanden ist.
             return self.native_manager is not None or "flatpak" in self.managers
+        if kind == "snap":
+            # Snap ist auf Ubuntu und Abkömmlingen zu Hause. Anderswo lässt es
+            # sich nachrüsten, gilt aber nur als nutzbar, wenn es schon da ist –
+            # sonst würde SilentInstaller ungefragt einen zweiten Paketdienst
+            # samt Hintergrunddienst auf den Rechner holen.
+            return "snap" in self.managers or self.stammt_von("ubuntu")
         if kind == "script":
             return True
         return False
@@ -103,6 +125,7 @@ def detect() -> Distro:
             ("apt", "apt-get"),
             ("pacman", "pacman"),
             ("flatpak", "flatpak"),
+            ("snap", "snap"),
         )
         if shutil.which(binary)
     }
@@ -113,4 +136,5 @@ def detect() -> Distro:
         version=info.get("VERSION_ID", ""),
         family=family,
         managers=managers,
+        id_like=id_like,
     )

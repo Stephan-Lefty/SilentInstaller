@@ -81,7 +81,12 @@
         "apt": {
           "packages": [
             "firefox-esr"
-          ]
+          ],
+          "je_distro": {
+            "ubuntu": {
+              "packages": []
+            }
+          }
         },
         "pacman": {
           "packages": [
@@ -90,6 +95,11 @@
         },
         "flatpak": {
           "ref": "org.mozilla.firefox"
+        },
+        "snap": {
+          "packages": [
+            "firefox"
+          ]
         }
       }
     },
@@ -104,7 +114,12 @@
         "apt": {
           "packages": [
             "chromium"
-          ]
+          ],
+          "je_distro": {
+            "ubuntu": {
+              "packages": []
+            }
+          }
         },
         "pacman": {
           "packages": [
@@ -113,6 +128,11 @@
         },
         "flatpak": {
           "ref": "org.chromium.Chromium"
+        },
+        "snap": {
+          "packages": [
+            "chromium"
+          ]
         }
       }
     },
@@ -192,7 +212,12 @@
         "apt": {
           "packages": [
             "thunderbird"
-          ]
+          ],
+          "je_distro": {
+            "ubuntu": {
+              "packages": []
+            }
+          }
         },
         "pacman": {
           "packages": [
@@ -201,6 +226,11 @@
         },
         "flatpak": {
           "ref": "org.mozilla.Thunderbird"
+        },
+        "snap": {
+          "packages": [
+            "thunderbird"
+          ]
         }
       }
     },
@@ -273,6 +303,11 @@
         },
         "flatpak": {
           "ref": "org.signal.Signal"
+        },
+        "snap": {
+          "packages": [
+            "signal-desktop"
+          ]
         }
       }
     },
@@ -286,7 +321,12 @@
         "apt": {
           "packages": [
             "telegram-desktop"
-          ]
+          ],
+          "je_distro": {
+            "ubuntu": {
+              "packages": []
+            }
+          }
         },
         "pacman": {
           "packages": [
@@ -295,6 +335,11 @@
         },
         "flatpak": {
           "ref": "org.telegram.desktop"
+        },
+        "snap": {
+          "packages": [
+            "telegram-desktop"
+          ]
         }
       }
     },
@@ -682,6 +727,11 @@
       "sources": {
         "flatpak": {
           "ref": "com.spotify.Client"
+        },
+        "snap": {
+          "packages": [
+            "spotify"
+          ]
         }
       }
     },
@@ -818,6 +868,12 @@
         },
         "flatpak": {
           "ref": "org.blender.Blender"
+        },
+        "snap": {
+          "packages": [
+            "blender"
+          ],
+          "classic": true
         }
       }
     },
@@ -884,6 +940,12 @@
         },
         "flatpak": {
           "ref": "com.visualstudio.code"
+        },
+        "snap": {
+          "packages": [
+            "code"
+          ],
+          "classic": true
         }
       }
     },
@@ -1080,7 +1142,12 @@
         "apt": {
           "packages": [
             "fastfetch"
-          ]
+          ],
+          "je_distro": {
+            "ubuntu": {
+              "packages": []
+            }
+          }
         },
         "pacman": {
           "packages": [
@@ -1576,7 +1643,15 @@
             "contrib",
             "non-free",
             "non-free-firmware"
-          ]
+          ],
+          "je_distro": {
+            "ubuntu": {
+              "packages": [
+                "linux-firmware"
+              ],
+              "components": []
+            }
+          }
         },
         "pacman": {
           "packages": [

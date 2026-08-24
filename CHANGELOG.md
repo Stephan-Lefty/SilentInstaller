@@ -4,6 +4,38 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.0] – 2026-08-18
+
+### Neu
+
+- **Snap als fünfte Quellenart.** Installieren, Entfernen und Erkennen –
+  einschließlich `--classic` für Pakete, die Zugriff aufs ganze System
+  brauchen (etwa `code` und `blender`). Snap gilt auf Ubuntu und Abkömmlingen
+  als verfügbar; anderswo nur, wenn `snap` bereits vorhanden ist. Ein
+  ungefragtes Nachrüsten eines zweiten Paketdienstes samt Hintergrunddienst
+  wäre unhöflich.
+- **Distributionsabhängige Paketnamen.** Über `je_distro` lässt sich je Quelle
+  hinterlegen, wie ein Paket auf einem bestimmten System heißt. Die speziellste
+  Übereinstimmung gewinnt: Ein Eintrag für Linux Mint schlägt den für Ubuntu,
+  dieser den für Debian. Bleibt die Paketliste für ein System leer, gilt die
+  Quelle dort als nicht vorhanden – so lässt sich etwa unter Ubuntu von APT auf
+  Snap ausweichen.
+
+### Behoben
+
+- **Ubuntu war nicht auf dem Stand von Debian und Arch.** Eine Prüfung in
+  Ubuntu 24.04 zeigte sieben Einträge, deren APT-Pakete es dort gar nicht gibt
+  (`firefox-esr`, `chromium`, `telegram-desktop`, `fastfetch` sowie die drei
+  `firmware-*`-Pakete), und einen, bei dem `apt install` stillschweigend einen
+  Snap unterschob (`thunderbird`) – ohne dass SilentInstaller das erkannte oder
+  anzeigte. Firefox, Chromium, Thunderbird und Telegram laufen dort jetzt
+  ausdrücklich über Snap, die Firmware über `linux-firmware`. `fastfetch` gibt
+  es unter Ubuntu 24.04 weder als Paket noch als Snap und wird ehrlich als
+  „nicht verfügbar“ angezeigt.
+- Ein per Snap installiertes Programm galt als nicht installiert, weil
+  `snap list` nie abgefragt wurde. Unter Ubuntu betraf das den vorinstallierten
+  Firefox.
+
 ## [1.3.1] – 2026-08-18
 
 ### Behoben
@@ -191,6 +223,7 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Starter `silentinstaller.sh`, der fehlende GTK4-Abhängigkeiten nachrüstet,
   sowie `install.sh` für den Menüeintrag.
 
+[1.4.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.0
 [1.3.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.1
 [1.3.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.0
 [1.2.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.2.1
