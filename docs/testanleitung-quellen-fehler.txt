@@ -1,0 +1,286 @@
+===============================================================================
+ SilentInstaller - Testanleitung fuer GuideOS
+ Fehler nachstellen, reparieren, Behebung pruefen
+ Stand: 24.08.2026
+===============================================================================
+
+Der Test laeuft in einem Durchgang: erst den Fehler herstellen (Fassung 1.4.0),
+dann reparieren, dann pruefen, dass er mit 1.4.1 nicht wiederkommt.
+
+WICHTIG VORAB
+-------------
+Waehrend Teil 2 ist apt voruebergehend unbrauchbar. Das ist gewollt - genau
+darum geht es. Bitte nur auf einem Testrechner oder in einer VM mit Snapshot.
+Das Reparaturskript in Teil 3 holt dich zuverlaessig da raus.
+
+Zeitbedarf: etwa 20 Minuten.
+
+
+===============================================================================
+ TEIL 0  -  Vorbereitung
+===============================================================================
+
+0.1  Snapshot anlegen (falls VM) oder sicherstellen, dass es ein Testrechner ist.
+
+0.2  Ausgangslage festhalten - welche Brave-Quellen gibt es schon?
+
+     ls -la /etc/apt/sources.list.d/
+     grep -rl brave /etc/apt/sources.list.d/
+
+     ERWARTET: GuideOS bringt eine Brave-Quelle mit, z. B.
+               brave-browser-release.list oder aehnlich.
+     NOTIEREN: Wie heisst die Datei genau? ______________________________
+
+0.3  Pruefen, dass apt gesund ist:
+
+     sudo apt update
+
+     ERWARTET: laeuft durch, keine Fehlermeldung mit "Signed-By".
+
+
+===============================================================================
+ TEIL 1  -  Fassung MIT dem Fehler installieren (1.4.0)
+===============================================================================
+
+1.1  Herunterladen:
+
+     wget https://github.com/Stephan-Lefty/SilentInstaller/releases/download/v1.4.0/silentinstaller_1.4.0_all.deb
+
+1.2  Installieren:
+
+     sudo apt install ./silentinstaller_1.4.0_all.deb
+
+     ERWARTET: Installation laeuft durch. (Der Fehler entsteht hier noch NICHT.)
+
+1.3  Pruefen, welche Fassung installiert ist:
+
+     silentinstaller --version 2>/dev/null || dpkg-query -W -f='${Version}\n' silentinstaller
+
+     ERWARTET: 1.4.0
+
+
+===============================================================================
+ TEIL 2  -  Den Fehler ausloesen
+===============================================================================
+
+Der Fehler entsteht NICHT durch die Paketinstallation, sondern erst, wenn
+SilentInstaller die Brave-Quelle anlegt.
+
+2.1  SilentInstaller starten (Anwendungsmenue oder Terminal):
+
+     silentinstaller
+
+2.2  In der Liste "Brave Browser" ankreuzen (Kategorie Internet).
+     Sonst nichts auswaehlen - das genuegt.
+
+2.3  Unten auf "Installieren" klicken und bestaetigen.
+
+     >>> HIER KOMMT DIE PASSWORTABFRAGE (polkit) <<<
+     Das ist zugleich der letzte bisher ungetestete Punkt.
+
+     NOTIEREN: Kam die Passwortabfrage?          ja / nein
+     NOTIEREN: Sah sie normal aus (GuideOS-Dialog)?  ja / nein
+
+2.4  Durchlauf abwarten, dann Fenster schliessen.
+
+2.5  Den Schaden ansehen:
+
+     ls -la /etc/apt/sources.list.d/
+     grep -rl brave /etc/apt/sources.list.d/
+
+     ERWARTET: Jetzt gibt es ZWEI Brave-Quellen - die von GuideOS und
+               zusaetzlich brave-browser.list von SilentInstaller.
+
+2.6  Den Fehler ausloesen:
+
+     sudo apt update
+
+     ERWARTET (genau das ist der gemeldete Fehler):
+
+       Fehler: Widersprüchliche Werte gesetzt für Option Signed-By betreffend
+       die Quelle https://brave-browser-apt-release.s3.brave.com/ stable:
+       /usr/share/keyrings/brave-browser-archive-keyring.gpg !=
+       /usr/share/keyrings/silentinstaller-brave.gpg
+       Fehler: Die Liste der Quellen konnte nicht gelesen werden.
+
+     NOTIEREN: Fehlermeldung wortgleich?  ja / nein
+
+2.7  Gegenprobe, dass wirklich alles blockiert ist:
+
+     sudo apt install hello
+
+     ERWARTET: Scheitert mit derselben Meldung. apt ist komplett blockiert,
+               nicht nur fuer SilentInstaller.
+
+
+===============================================================================
+ TEIL 3  -  Reparieren (ohne apt!)
+===============================================================================
+
+Jetzt laesst sich auch die Fassung mit der Behebung nicht installieren -
+apt bricht ja schon vorher ab. Deshalb ein Skript, das ohne apt auskommt.
+
+3.1  Skript holen:
+
+     curl -fsSLO https://raw.githubusercontent.com/Stephan-Lefty/SilentInstaller/main/apt-quellen-reparieren.sh
+     chmod +x apt-quellen-reparieren.sh
+
+3.2  ERST NUR ANSEHEN, was es taete (aendert nichts):
+
+     sudo ./apt-quellen-reparieren.sh
+
+     ERWARTET: Meldet genau EINEN Widerspruch und nennt beide Dateien:
+               die eigene (brave-browser.list) und die von GuideOS.
+
+     NOTIEREN: Wurde die richtige Datei gefunden?  ja / nein
+     NOTIEREN: Blieb die GuideOS-Datei unerwaehnt (also verschont)? ja / nein
+
+3.3  Jetzt wirklich reparieren:
+
+     sudo ./apt-quellen-reparieren.sh --machen
+
+     ERWARTET: "-> entfernt" und "1 Widerspruch/Widersprüche behoben."
+
+3.4  Pruefen:
+
+     ls -la /etc/apt/sources.list.d/
+     sudo apt update
+
+     ERWARTET: Nur noch die Brave-Quelle von GuideOS. apt laeuft wieder
+               fehlerfrei.
+
+     NOTIEREN: apt wieder in Ordnung?  ja / nein
+
+     WICHTIG: Ist Brave in Teil 2 installiert worden, bleibt es installiert.
+              Entfernt wird nur die doppelte Paketquelle, nicht das Programm.
+
+
+===============================================================================
+ TEIL 4  -  Fassung MIT der Behebung installieren (1.4.1)
+===============================================================================
+
+4.1  Herunterladen und installieren:
+
+     wget https://github.com/Stephan-Lefty/SilentInstaller/releases/download/v1.4.1/silentinstaller_1.4.1_all.deb
+     sudo apt install ./silentinstaller_1.4.1_all.deb
+
+     ERWARTET: Laeuft jetzt durch (in Teil 2/3 waere das gescheitert).
+
+4.2  Fassung pruefen:
+
+     dpkg-query -W -f='${Version}\n' silentinstaller
+
+     ERWARTET: 1.4.1
+
+
+===============================================================================
+ TEIL 5  -  Beweisen, dass der Fehler nicht wiederkommt
+===============================================================================
+
+5.1  Falls Brave in Teil 2 installiert wurde, zuerst wieder entfernen, damit
+     SilentInstaller es erneut installieren will:
+
+     sudo apt remove brave-browser
+
+     (Wer Brave behalten moechte, ueberspringt das - dann zeigt
+      SilentInstaller Brave als "installiert" an. Fuer den Test der
+      Quellen-Behandlung genuegt auch das, siehe 5.4.)
+
+5.2  SilentInstaller starten, Brave ankreuzen, "Installieren".
+
+5.3  Im Fortschrittsfenster auf diese Zeile achten:
+
+       Paketquelle https://brave-browser-apt-release.s3.brave.com/ ist
+       bereits eingerichtet - wird nicht doppelt angelegt
+
+     NOTIEREN: Zeile erschienen?  ja / nein
+
+5.4  Entscheidender Nachweis:
+
+     grep -rl brave /etc/apt/sources.list.d/
+     sudo apt update
+
+     ERWARTET: Weiterhin nur EINE Brave-Quelle (die von GuideOS).
+               apt laeuft fehlerfrei.
+
+     NOTIEREN: Nur eine Quelle?     ja / nein
+     NOTIEREN: apt fehlerfrei?      ja / nein
+
+
+===============================================================================
+ TEIL 6  -  Selbstheilung pruefen (freiwillig)
+===============================================================================
+
+Nur wenn du magst: Der Widerspruch soll sich beim naechsten Durchlauf auch
+von selbst aufloesen, sofern das Programm ueberhaupt startet.
+
+6.1  Widerspruch von Hand herstellen:
+
+     sudo cp /usr/share/keyrings/brave-browser-archive-keyring.gpg \
+             /usr/share/keyrings/silentinstaller-brave.gpg
+     echo 'deb [signed-by=/usr/share/keyrings/silentinstaller-brave.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main' \
+       | sudo tee /etc/apt/sources.list.d/brave-browser.list
+
+6.2  Bestaetigen, dass apt streikt:
+
+     sudo apt update
+
+6.3  SilentInstaller starten, Brave ankreuzen, "Installieren".
+
+     ERWARTET im Fortschrittsfenster:
+
+       Paketquelle ... ist bereits eingerichtet - wird nicht doppelt angelegt
+         fruehere eigene Eintragung entfernt, um einen Widerspruch aufzuloesen
+
+6.4  Pruefen:
+
+     sudo apt update
+
+     ERWARTET: laeuft wieder fehlerfrei, ohne dass du von Hand eingegriffen hast.
+
+     NOTIEREN: Selbstheilung hat funktioniert?  ja / nein
+
+
+===============================================================================
+ WAS ICH VON DIR BRAUCHE
+===============================================================================
+
+Bitte melde zurueck:
+
+  1. Kam in Teil 2.3 die polkit-Passwortabfrage?      ja / nein
+  2. War die Fehlermeldung in 2.6 wortgleich?         ja / nein
+  3. Hat das Reparaturskript die richtige Datei erwischt (3.2/3.3)?
+  4. Erschien die Meldung "bereits eingerichtet" in 5.3?
+  5. Lief apt am Ende fehlerfrei?
+
+Bei Problemen bitte mitbringen:
+
+  - die vollstaendige Ausgabe aus dem Fortschrittsfenster von SilentInstaller
+    (der Text laesst sich markieren und kopieren)
+  - die Ausgabe von:  ls -la /etc/apt/sources.list.d/
+  - die Ausgabe von:  sudo apt update
+  - die Ausgabe von:  grep -r silentinstaller /etc/apt/sources.list.d/
+
+
+===============================================================================
+ NOTBREMSE
+===============================================================================
+
+Wenn irgendetwas klemmt und apt nicht mehr will:
+
+     sudo rm $(grep -rl silentinstaller- /etc/apt/sources.list.d/)
+     sudo apt update
+
+Das entfernt ausschliesslich die von SilentInstaller angelegten Quellen. Die
+Paketquellen von GuideOS bleiben unberuehrt.
+
+SilentInstaller ganz entfernen:
+
+     sudo apt remove silentinstaller
+
+Die eigenen Einstellungen und Profile bleiben dabei erhalten. Sie liegen unter
+~/.config/silentinstaller/ und lassen sich bei Bedarf loeschen:
+
+     rm -rf ~/.config/silentinstaller/
+
+===============================================================================
