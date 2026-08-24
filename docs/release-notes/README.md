@@ -9,6 +9,7 @@ und richten sich an Leute, die eine bestimmte Fassung installieren.
 
 | Fassung | Kern |
 | --- | --- |
+| [1.5.0](v1.5.0.md) | Paketnamen gegen die echten Quellen geprüft, fünf tote Einträge behoben |
 | [1.4.2](v1.4.2.md) | Fortschritt war während der Installation unsichtbar |
 | [1.4.1](v1.4.1.md) | Doppelte Paketquelle machte apt unbrauchbar |
 | [1.4.0](v1.4.0.md) | Snap als fünfte Quellenart, Paketnamen je Distribution |
