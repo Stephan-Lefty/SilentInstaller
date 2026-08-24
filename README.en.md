@@ -50,7 +50,7 @@ light or dark.
 ### Debian, Ubuntu, Linux Mint … — as a package
 
 ```bash
-sudo apt install ./silentinstaller_1.4.2_all.deb
+sudo apt install ./silentinstaller_1.5.0_all.deb
 ```
 
 The package pulls in every dependency, adds the menu entry and registers the
@@ -267,7 +267,7 @@ From version 1.4.1 on, this state can no longer arise.
 
 ## Bundled catalog
 
-84 entries in eleven categories, each with a German and an English description:
+85 entries in eleven categories, each with a German and an English description:
 internet, communication, office, multimedia, graphics, development, system
 tools, security & backup, games, **fonts** and essentials (codecs, archive
 formats, firmware).

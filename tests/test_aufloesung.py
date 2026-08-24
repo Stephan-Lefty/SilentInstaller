@@ -116,27 +116,44 @@ class GesamterKatalog(unittest.TestCase):
             if backends.resolve(app, system) is None
         ]
 
-    def test_debian_deckt_alles_ab(self):
-        self.assertEqual(
-            self._ohne_quelle(DEBIAN), [],
-            "unter Debian sollte jeder Eintrag eine Quelle haben",
-        )
+    #: Einträge, für die es auf dem jeweiligen System bewusst keine Quelle
+    #: gibt. Jede Lücke ist geprüft und begründet – wächst die Liste
+    #: unbemerkt, schlägt der Test an; schließt sich eine Lücke, ebenfalls.
+    BEKANNTE_LUECKEN = {
+        # VirtualBox wurde aus Debian entfernt, VeraCrypt gibt es dort nicht
+        # und auf Flathub nicht mehr. Für beide steht Ersatz im Katalog:
+        # virt-manager, GNOME Boxes und Cryptomator.
+        "debian": {"VirtualBox", "VeraCrypt"},
+        # fastfetch kam erst mit Ubuntu 24.10 und hat kein Snap.
+        "ubuntu": {"fastfetch", "VeraCrypt"},
+        # Synaptic und das Flatpak-Modul für GNOME Software sind
+        # Debian-eigene Werkzeuge.
+        "arch": {"Synaptic", "Flatpak in „Software“ einbinden"},
+    }
 
-    def test_ubuntu_hat_hoechstens_wenige_luecken(self):
-        luecken = self._ohne_quelle(UBUNTU)
-        self.assertLessEqual(
-            len(luecken), 3,
-            f"zu viele Einträge ohne Quelle unter Ubuntu: {luecken}",
-        )
+    def test_luecken_sind_die_bekannten(self):
+        for name, system in (("debian", DEBIAN), ("ubuntu", UBUNTU), ("arch", ARCH)):
+            with self.subTest(system=name):
+                self.assertEqual(
+                    set(self._ohne_quelle(system)),
+                    self.BEKANNTE_LUECKEN[name],
+                    "Die Lücken haben sich geändert – Katalog prüfen und diese "
+                    "Liste anpassen",
+                )
 
     def test_mint_verhaelt_sich_wie_ubuntu(self):
         self.assertEqual(self._ohne_quelle(MINT), self._ohne_quelle(UBUNTU))
 
-    def test_arch_deckt_fast_alles_ab(self):
-        luecken = self._ohne_quelle(ARCH)
-        self.assertLessEqual(
-            len(luecken), 3, f"zu viele Einträge ohne Quelle unter Arch: {luecken}"
-        )
+    def test_der_grossteil_ist_ueberall_zu_haben(self):
+        for name, system in (("debian", DEBIAN), ("ubuntu", UBUNTU), ("arch", ARCH)):
+            with self.subTest(system=name):
+                abgedeckt = sum(
+                    1 for app in self.katalog.apps if backends.resolve(app, system)
+                )
+                anteil = abgedeckt / len(self.katalog.apps)
+                self.assertGreater(
+                    anteil, 0.95, f"nur {abgedeckt} von {len(self.katalog.apps)}"
+                )
 
     def test_auf_fremdem_system_bleibt_alles_leer(self):
         self.assertEqual(len(self._ohne_quelle(FREMD)), len(self.katalog.apps))

@@ -318,16 +318,6 @@
       "description_en": "Messenger with cloud history",
       "category": "kommunikation",
       "sources": {
-        "apt": {
-          "packages": [
-            "telegram-desktop"
-          ],
-          "je_distro": {
-            "ubuntu": {
-              "packages": []
-            }
-          }
-        },
         "pacman": {
           "packages": [
             "telegram-desktop"
@@ -1267,12 +1257,23 @@
           ],
           "components": [
             "contrib"
-          ]
+          ],
+          "je_distro": {
+            "ubuntu": {
+              "packages": [
+                "virtualbox",
+                "virtualbox-qt"
+              ]
+            },
+            "debian": {
+              "packages": []
+            }
+          }
         },
         "pacman": {
           "packages": [
             "virtualbox",
-            "virtualbox-host-modules-arch"
+            "virtualbox-host-dkms"
           ]
         }
       }
@@ -1394,8 +1395,26 @@
         "flatpak"
       ],
       "sources": {
+        "pacman": {
+          "packages": [
+            "veracrypt"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cryptomator",
+      "name": "Cryptomator",
+      "name_en": "Cryptomator",
+      "description": "Verschlüsselte Ordner, auch für Cloud-Speicher",
+      "description_en": "Encrypted folders, also for cloud storage",
+      "category": "sicherheit",
+      "prefer": [
+        "flatpak"
+      ],
+      "sources": {
         "flatpak": {
-          "ref": "com.veracrypt.VeraCrypt"
+          "ref": "org.cryptomator.Cryptomator"
         }
       }
     },
@@ -1585,7 +1604,7 @@
         },
         "pacman": {
           "packages": [
-            "p7zip",
+            "7zip",
             "unzip",
             "zip",
             "unarchiver"

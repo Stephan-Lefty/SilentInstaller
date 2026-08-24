@@ -4,6 +4,41 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.5.0] – 2026-08-24
+
+### Behoben
+
+Alle Paketnamen wurden erstmals gegen die echten Paketquellen von Arch,
+Debian 13 und Ubuntu 24.04 geprüft. Dabei kamen fünf Einträge ans Licht, die
+so nicht mehr funktionierten:
+
+- **`p7zip` gibt es unter Arch nicht mehr** – das Paket wurde durch `7zip`
+  ersetzt (`Replaces: p7zip`).
+- **`virtualbox-host-modules-arch` ist verschwunden**; an seine Stelle tritt
+  `virtualbox-host-dkms`, das mit jedem Kernel arbeitet.
+- **`telegram-desktop` fehlt sowohl in Debian 13 als auch in Ubuntu 24.04.**
+  Die APT-Quelle ist entfallen; es bleiben Snap und Flatpak, unter Arch das
+  Distributionspaket.
+- **VirtualBox wurde aus Debian entfernt.** Unter Ubuntu liegt es weiterhin in
+  multiverse, unter Arch in extra. Für Debian wird der Eintrag ehrlich als
+  nicht verfügbar geführt – als Ersatz stehen virt-manager und GNOME Boxes
+  im Katalog.
+- **VeraCrypt ist von Flathub verschwunden.** Unter Arch gibt es das Paket
+  weiterhin; für Debian und Ubuntu wäre der Eintrag ins Leere gelaufen.
+
+### Neu
+
+- **Cryptomator** als Ersatz für VeraCrypt auf Systemen, wo es dieses nicht
+  gibt: verschlüsselte Ordner, über Flathub auf allen drei Systemen zu haben.
+- **Prüfung der Paketnamen als eigener Arbeitsablauf.** Er schlägt in
+  Containern von Arch, Debian und Ubuntu nach, ob jeder Name noch existiert,
+  fragt Flathub nach jeder Kennung und meldet, wenn Ubuntu bei einem Paket
+  heimlich einen Snap unterschiebt. Läuft wöchentlich und bei jeder Änderung
+  am Katalog – gerade auf einem Rolling-Release-System wie Arch wandern
+  Pakete häufiger, als einem lieb ist.
+- Die Tests führen die bekannten Lücken je System nun namentlich auf. Kommt
+  eine neue hinzu oder schließt sich eine, fällt das auf.
+
 ## [1.4.2] – 2026-08-24
 
 ### Behoben
@@ -265,6 +300,7 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Starter `silentinstaller.sh`, der fehlende GTK4-Abhängigkeiten nachrüstet,
   sowie `install.sh` für den Menüeintrag.
 
+[1.5.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.5.0
 [1.4.2]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.2
 [1.4.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.1
 [1.4.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.0

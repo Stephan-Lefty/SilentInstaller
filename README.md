@@ -52,7 +52,7 @@ hell oder dunkel.
 ### Debian, Ubuntu, Linux Mint … – als Paket
 
 ```bash
-sudo apt install ./silentinstaller_1.4.2_all.deb
+sudo apt install ./silentinstaller_1.5.0_all.deb
 ```
 
 Das Paket bringt alle Abhängigkeiten mit, legt den Menüeintrag an und meldet
@@ -292,7 +292,7 @@ Ab Fassung 1.4.1 entsteht dieser Zustand nicht mehr.
 
 ## Mitgelieferter Katalog
 
-84 Einträge in elf Kategorien, jeweils mit deutscher und englischer
+85 Einträge in elf Kategorien, jeweils mit deutscher und englischer
 Beschreibung: Internet, Kommunikation, Büro & Dokumente, Multimedia,
 Grafik & Foto, Entwicklung, System & Werkzeuge, Sicherheit & Backup, Spiele,
 **Schriften** und Grundausstattung (Codecs, Archivformate, Firmware).
