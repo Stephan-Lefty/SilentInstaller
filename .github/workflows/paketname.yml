@@ -1,0 +1,240 @@
+name: Paketnamen
+
+# Prüft, ob die Paketnamen im Katalog auf den unterstützten Systemen
+# überhaupt noch existieren. Genau dieser Durchgang hat aufgedeckt, dass
+# »p7zip« unter Arch durch »7zip« ersetzt wurde und VirtualBox aus Debian
+# verschwunden ist.
+#
+# Läuft nicht bei jedem Push – Paketquellen ändern sich nicht im Minutentakt.
+on:
+  schedule:
+    # Montags früh, damit Umbenennungen zu Wochenbeginn auffallen.
+    - cron: "0 5 * * 1"
+  push:
+    paths:
+      - "silentinstaller/data/catalog.json"
+  workflow_dispatch:
+
+jobs:
+  namen-sammeln:
+    name: Namen aus dem Katalog holen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Listen erzeugen
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+
+          katalog = json.loads(
+              pathlib.Path("silentinstaller/data/catalog.json").read_text(encoding="utf-8")
+          )
+
+          def sammeln(art, kennung=None):
+              """Alle Paketnamen einer Quellenart, wahlweise für ein System."""
+              namen = set()
+              for app in katalog["apps"]:
+                  quelle = app.get("sources", {}).get(art)
+                  if not quelle:
+                      continue
+                  pakete = quelle.get("packages", [])
+                  varianten = quelle.get("je_distro") or {}
+                  if kennung and kennung in varianten:
+                      pakete = varianten[kennung].get("packages", pakete)
+                  namen.update(p for p in pakete if p)
+              return sorted(namen)
+
+          for datei, art, kennung in (
+              ("pacman.txt", "pacman", None),
+              ("apt-debian.txt", "apt", "debian"),
+              ("apt-ubuntu.txt", "apt", "ubuntu"),
+          ):
+              namen = sammeln(art, kennung)
+              pathlib.Path(datei).write_text("\n".join(namen) + "\n")
+              print(f"{datei}: {len(namen)} Namen")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paketnamen
+          path: "*.txt"
+
+  arch:
+    name: Arch Linux
+    needs: namen-sammeln
+    runs-on: ubuntu-latest
+    container: archlinux:base
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: paketnamen
+
+      - name: Paketlisten holen
+        run: |
+          # multilib entspricht dem, was auf einem Arbeitsplatzrechner
+          # üblicherweise eingeschaltet ist – Steam liegt dort.
+          printf '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' >> /etc/pacman.conf
+          pacman -Sy --noconfirm
+
+      - name: Gibt es die Pakete noch?
+        run: |
+          fehlt=""
+          gefunden=0
+          while read -r paket; do
+            [ -n "$paket" ] || continue
+            if pacman -Si "$paket" >/dev/null 2>&1; then
+              gefunden=$((gefunden + 1))
+            else
+              fehlt="$fehlt $paket"
+            fi
+          done < pacman.txt
+          echo "vorhanden: $gefunden"
+          if [ -n "$fehlt" ]; then
+            echo "In den offiziellen Quellen nicht gefunden:"
+            for paket in $fehlt; do
+              echo "  $paket"
+              # Vielleicht wurde es nur umbenannt.
+              pacman -Ss "$paket" 2>/dev/null | head -2 | sed 's/^/      /'
+            done
+            exit 1
+          fi
+          echo "Alle Pacman-Pakete vorhanden."
+
+  debian:
+    name: Debian 13
+    needs: namen-sammeln
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: paketnamen
+
+      - name: Paketlisten holen
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          # contrib und non-free schaltet SilentInstaller bei Bedarf selbst
+          # frei – für die Prüfung müssen sie von Anfang an sichtbar sein.
+          sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' \
+            /etc/apt/sources.list.d/debian.sources
+          apt-get update -qq
+
+      - name: Gibt es die Pakete noch?
+        run: |
+          # Pakete aus Fremdquellen fehlen hier zwangsläufig – die richtet
+          # SilentInstaller erst zur Laufzeit ein.
+          AUS_FREMDQUELLE="brave-browser code signal-desktop vivaldi-stable"
+          fehlt=""
+          gefunden=0
+          while read -r paket; do
+            [ -n "$paket" ] || continue
+            case " $AUS_FREMDQUELLE " in *" $paket "*) continue ;; esac
+            kandidat=$(apt-cache policy "$paket" 2>/dev/null | awk '/Candidate:/{print $2}')
+            if [ -n "$kandidat" ] && [ "$kandidat" != "(none)" ]; then
+              gefunden=$((gefunden + 1))
+            else
+              fehlt="$fehlt $paket"
+            fi
+          done < apt-debian.txt
+          echo "vorhanden: $gefunden"
+          if [ -n "$fehlt" ]; then
+            echo "Nicht in Debian 13:"
+            for paket in $fehlt; do echo "  $paket"; done
+            exit 1
+          fi
+          echo "Alle APT-Pakete für Debian vorhanden."
+
+  ubuntu:
+    name: Ubuntu 24.04
+    needs: namen-sammeln
+    runs-on: ubuntu-latest
+    container: ubuntu:24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: paketnamen
+
+      - name: Paketlisten holen
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: apt-get update -qq
+
+      - name: Gibt es die Pakete – und schiebt apt heimlich einen Snap unter?
+        run: |
+          AUS_FREMDQUELLE="brave-browser code signal-desktop vivaldi-stable"
+          fehlt=""
+          umleitung=""
+          gefunden=0
+          while read -r paket; do
+            [ -n "$paket" ] || continue
+            case " $AUS_FREMDQUELLE " in *" $paket "*) continue ;; esac
+            kandidat=$(apt-cache policy "$paket" 2>/dev/null | awk '/Candidate:/{print $2}')
+            if [ -z "$kandidat" ] || [ "$kandidat" = "(none)" ]; then
+              fehlt="$fehlt $paket"
+            elif echo "$kandidat" | grep -q snap; then
+              # Solche Pakete installieren in Wahrheit einen Snap, ohne dass
+              # der Benutzer es merkt. Wo wir das wollen, nehmen wir Snap offen.
+              umleitung="$umleitung $paket($kandidat)"
+            else
+              gefunden=$((gefunden + 1))
+            fi
+          done < apt-ubuntu.txt
+          echo "vorhanden: $gefunden"
+          fehler=0
+          if [ -n "$fehlt" ]; then
+            echo "Nicht in Ubuntu 24.04:"
+            for paket in $fehlt; do echo "  $paket"; done
+            fehler=1
+          fi
+          if [ -n "$umleitung" ]; then
+            echo "Diese Pakete leiten heimlich auf Snap um:"
+            for eintrag in $umleitung; do echo "  $eintrag"; done
+            fehler=1
+          fi
+          [ "$fehler" -eq 0 ] || exit 1
+          echo "Alle APT-Pakete für Ubuntu vorhanden, keine stille Umleitung."
+
+  flathub:
+    name: Flathub
+    needs: namen-sammeln
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gibt es die Flatpaks noch?
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, urllib.error, urllib.request
+
+          katalog = json.loads(
+              pathlib.Path("silentinstaller/data/catalog.json").read_text(encoding="utf-8")
+          )
+          kennungen = sorted({
+              app["sources"]["flatpak"]["ref"]
+              for app in katalog["apps"]
+              if app.get("sources", {}).get("flatpak", {}).get("ref")
+          })
+
+          fehlt = []
+          for kennung in kennungen:
+              adresse = f"https://flathub.org/api/v2/appstream/{kennung}"
+              try:
+                  with urllib.request.urlopen(adresse, timeout=20) as antwort:
+                      antwort.read(1)
+              except urllib.error.HTTPError as fehler:
+                  if fehler.code == 404:
+                      fehlt.append(kennung)
+              except Exception:
+                  # Netzstörungen sollen den Durchgang nicht rot färben.
+                  pass
+
+          print(f"geprüft: {len(kennungen)}")
+          if fehlt:
+              print("Nicht mehr auf Flathub:")
+              for kennung in fehlt:
+                  print(f"  {kennung}")
+              raise SystemExit(1)
+          print("Alle Flatpaks vorhanden.")
+          PY
