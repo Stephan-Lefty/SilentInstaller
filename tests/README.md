@@ -31,16 +31,20 @@ Fast jeder Test steht für einen Fehler, der einmal wirklich aufgetreten ist:
 
 Wer einen Fehler behebt, sollte hier einen Fall ergänzen. Dann bleibt er behoben.
 
-## Was diese Tests *nicht* leisten
+## Was hier nicht geprüft wird – und wo dann
 
-Sie prüfen Logik, nicht das Zusammenspiel mit einem echten System. Nicht
-abgedeckt sind:
+Diese Tests prüfen Logik, nicht das Zusammenspiel mit einem echten System.
+Zwei weitere Arbeitsabläufe schließen die wichtigsten Lücken:
 
-- ob ein Paketname in der jeweiligen Distribution tatsächlich existiert
-  (dafür braucht es Container mit Debian, Ubuntu und Arch)
-- die Passwortabfrage über polkit
-- das Aussehen der Oberfläche
+| Wo | Was |
+| --- | --- |
+| `.github/workflows/tests.yml` | Baut das Debian-Paket, installiert es wirklich, startet es unter Xvfb und prüft alle Aufrufwege |
+| `.github/workflows/paketname.yml` | Schlägt jeden Paketnamen in Containern von Arch, Debian 13 und Ubuntu 24.04 nach und fragt Flathub nach jeder Kennung |
 
-Diese drei Lücken haben in der Vergangenheit Fehler durchgelassen. Der
-Paketbau-Auftrag in `.github/workflows/tests.yml` deckt inzwischen einen Teil
-davon ab: Er installiert das gebaute Paket wirklich und startet es unter Xvfb.
+Der zweite Ablauf hat beim ersten Lauf fünf Einträge gefunden, die nicht mehr
+funktionierten – darunter einen, dessen einzige Quelle von Flathub verschwunden
+war.
+
+Weiterhin ungeprüft bleibt die Passwortabfrage über polkit: In Containern läuft
+alles als root, `pkexec` kommt nie zum Zug. Das lässt sich nur an einem echten
+Arbeitsplatzrechner feststellen.
