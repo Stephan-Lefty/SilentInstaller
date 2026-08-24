@@ -272,6 +272,9 @@ sudo ./apt-quellen-reparieren.sh --machen   # entfernt die Widersprüche
 sudo apt update
 ```
 
+Eine ausführliche Anleitung mit Erklärung jedes Schrittes steht unter
+[Blockierte Paketverwaltung wieder in Ordnung bringen](docs/blockierte-paketverwaltung-beheben.md).
+
 Entfernt wird ausschließlich die von SilentInstaller angelegte Datei, und auch
 nur dann, wenn dieselbe Quelle anderswo bereits eingetragen ist. Die
 Paketquelle der Distribution bleibt unberührt.
