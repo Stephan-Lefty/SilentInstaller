@@ -11,6 +11,7 @@ OS_RELEASE = Path("/etc/os-release")
 DEBIAN_IDS = {
     "debian", "ubuntu", "linuxmint", "pop", "elementary", "zorin", "raspbian",
     "devuan", "mx", "kali", "deepin", "neon", "tuxedo", "lmde", "parrot",
+    "guideos",
 }
 ARCH_IDS = {
     "arch", "archlinux", "manjaro", "endeavouros", "garuda", "artix",

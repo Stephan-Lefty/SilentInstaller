@@ -52,7 +52,7 @@ hell oder dunkel.
 ### Debian, Ubuntu, Linux Mint … – als Paket
 
 ```bash
-sudo apt install ./silentinstaller_1.4.0_all.deb
+sudo apt install ./silentinstaller_1.4.1_all.deb
 ```
 
 Das Paket bringt alle Abhängigkeiten mit, legt den Menüeintrag an und meldet

@@ -343,9 +343,39 @@ def build_remove_plan(items: list[Resolved], distro: Distro, purge: bool = False
 # -- Skripterzeugung -------------------------------------------------------
 
 HELPERS = r'''
+si_quelle_woanders() {
+  # Steht diese Paketquelle schon in einer anderen Datei? $1=URL $2=eigene Datei
+  local url="${1%/}" eigene="$2" datei
+  [ -n "$url" ] || return 1
+  for datei in /etc/apt/sources.list \
+               /etc/apt/sources.list.d/*.list \
+               /etc/apt/sources.list.d/*.sources; do
+    [ -f "$datei" ] || continue
+    [ "$datei" = "$eigene" ] && continue
+    grep -qsF "$url" "$datei" && return 0
+  done
+  return 1
+}
+
 si_add_repo() {
   # $1=Kennung  $2=Schlüssel-URL  $3=Keyring-Datei  $4=sources.list-Zeile
-  local key
+  local key eigene url
+  eigene="/etc/apt/sources.list.d/$1.list"
+  url="$(printf '%s' "$4" | grep -oE 'https?://[^ ]+' | head -1)"
+
+  # Bringt die Distribution diese Quelle bereits mit, darf hier nichts
+  # Zweites entstehen: Zwei Einträge derselben Quelle mit verschiedenen
+  # Signaturschlüsseln bringen apt vollständig zum Stehen – dann geht kein
+  # apt-Aufruf mehr, nicht nur dieser eine.
+  if si_quelle_woanders "$url" "$eigene"; then
+    echo "Paketquelle $url ist bereits eingerichtet – wird nicht doppelt angelegt"
+    if [ -f "$eigene" ]; then
+      rm -f "$eigene"
+      echo "  frühere eigene Eintragung entfernt, um einen Widerspruch aufzulösen"
+    fi
+    return 0
+  fi
+
   install -d -m 0755 "$(dirname "$3")" /etc/apt/sources.list.d
   key="$(mktemp)"
   if ! curl -fsSL --retry 2 -o "$key" "$2"; then
@@ -360,7 +390,7 @@ si_add_repo() {
   fi
   rm -f "$key"
   chmod 0644 "$3"
-  printf '%s\n' "$4" >"/etc/apt/sources.list.d/$1.list"
+  printf '%s\n' "$4" >"$eigene"
 }
 
 si_enable_components() {

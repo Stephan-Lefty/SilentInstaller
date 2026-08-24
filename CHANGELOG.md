@@ -4,6 +4,26 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.1] – 2026-08-24
+
+### Behoben
+
+- **Doppelte Paketquelle machte apt unbrauchbar.** Brachte die Distribution
+  eine der Fremdquellen bereits mit – etwa Brave unter GuideOS –, legte
+  SilentInstaller eine zweite Eintragung derselben Quelle mit eigenem
+  Signaturschlüssel an. apt verweigerte daraufhin **jeden** Dienst:
+
+      Fehler: Widersprüchliche Werte gesetzt für Option Signed-By betreffend
+      die Quelle …: brave-browser-archive-keyring.gpg != silentinstaller-brave.gpg
+      Fehler: Die Liste der Quellen konnte nicht gelesen werden.
+
+  Betroffen war nicht nur die Installation über SilentInstaller, sondern jeder
+  spätere `apt`-Aufruf. Vor dem Anlegen wird jetzt geprüft, ob dieselbe
+  Paketquelle schon anderweitig eingetragen ist; dann bleibt sie unangetastet.
+  Ein bereits entstandener Widerspruch löst sich beim nächsten Durchlauf von
+  selbst auf, weil die eigene Eintragung entfernt wird.
+- GuideOS wird ausdrücklich als Debian-Abkömmling geführt.
+
 ## [1.4.0] – 2026-08-18
 
 ### Neu
@@ -223,6 +243,7 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Starter `silentinstaller.sh`, der fehlende GTK4-Abhängigkeiten nachrüstet,
   sowie `install.sh` für den Menüeintrag.
 
+[1.4.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.1
 [1.4.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.0
 [1.3.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.1
 [1.3.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.0
