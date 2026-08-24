@@ -226,6 +226,36 @@ A third-party APT repository:
 `components` enables package components in the official Debian sources — needed
 for non-free firmware or VirtualBox, for example.
 
+## When apt refuses to work after an older run
+
+Versions up to 1.4.0 added a third-party source even when the distribution
+already shipped it — Brave on GuideOS, for instance. Two entries for the same
+source with different signing keys bring `apt` to a complete halt:
+
+```
+E: Conflicting values set for option Signed-By regarding source https://…:
+   brave-browser-archive-keyring.gpg != silentinstaller-brave.gpg
+E: The list of sources could not be read.
+```
+
+In that state even the package containing the fix cannot be installed — `apt`
+gives up before it gets that far. The bundled script therefore works without
+`apt`:
+
+```bash
+curl -fsSLO https://raw.githubusercontent.com/Stephan-Lefty/SilentInstaller/main/apt-quellen-reparieren.sh
+chmod +x apt-quellen-reparieren.sh
+sudo ./apt-quellen-reparieren.sh            # only shows what it would do
+sudo ./apt-quellen-reparieren.sh --machen   # removes the conflicts
+sudo apt update
+```
+
+Only the file created by SilentInstaller is removed, and only when the same
+source is already registered elsewhere. The distribution's own entry stays
+untouched.
+
+From version 1.4.1 on, this state can no longer arise.
+
 ## Security notes
 
 - Everything requiring root lives in a script you can inspect before it starts.

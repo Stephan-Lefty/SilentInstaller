@@ -23,6 +23,12 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
   Ein bereits entstandener Widerspruch löst sich beim nächsten Durchlauf von
   selbst auf, weil die eigene Eintragung entfernt wird.
 - GuideOS wird ausdrücklich als Debian-Abkömmling geführt.
+- **Reparaturskript `apt-quellen-reparieren.sh`** für Systeme, auf denen der
+  Widerspruch bereits entstanden ist. Dort hilft die neue Fassung allein nicht
+  weiter: Solange `apt` streikt, lässt sich auch das Paket mit der Behebung
+  nicht installieren. Das Skript kommt ohne `apt` aus, zeigt auf Wunsch erst
+  nur an, was es täte, und entfernt ausschließlich eigene Einträge, die mit
+  einer vorhandenen Quelle kollidieren.
 
 ## [1.4.0] – 2026-08-18
 

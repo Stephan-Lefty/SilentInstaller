@@ -247,6 +247,37 @@ für `ubuntu`, dieser den für `debian`.
 `components` schaltet Paketbereiche in den offiziellen Debian-Quellen frei –
 nötig etwa für unfreie Firmware oder VirtualBox.
 
+## Wenn apt nach einem älteren Durchlauf streikt
+
+Fassungen bis 1.4.0 legten eine Fremdquelle auch dann an, wenn die
+Distribution sie bereits mitbrachte – etwa Brave unter GuideOS. Zwei Einträge
+derselben Quelle mit verschiedenen Signaturschlüsseln legen `apt` vollständig
+lahm:
+
+```
+Fehler: Widersprüchliche Werte gesetzt für Option Signed-By betreffend die
+Quelle https://…: brave-browser-archive-keyring.gpg != silentinstaller-brave.gpg
+Fehler: Die Liste der Quellen konnte nicht gelesen werden.
+```
+
+In diesem Zustand lässt sich auch das Paket mit der Fehlerbehebung nicht mehr
+installieren – `apt` bricht ja schon vor der Installation ab. Das beiliegende
+Skript kommt deshalb ohne `apt` aus:
+
+```bash
+curl -fsSLO https://raw.githubusercontent.com/Stephan-Lefty/SilentInstaller/main/apt-quellen-reparieren.sh
+chmod +x apt-quellen-reparieren.sh
+sudo ./apt-quellen-reparieren.sh            # zeigt nur an, was zu tun wäre
+sudo ./apt-quellen-reparieren.sh --machen   # entfernt die Widersprüche
+sudo apt update
+```
+
+Entfernt wird ausschließlich die von SilentInstaller angelegte Datei, und auch
+nur dann, wenn dieselbe Quelle anderswo bereits eingetragen ist. Die
+Paketquelle der Distribution bleibt unberührt.
+
+Ab Fassung 1.4.1 entsteht dieser Zustand nicht mehr.
+
 ## Sicherheitshinweise
 
 - Alles, was Root-Rechte braucht, steht in einem Skript, das du vor dem Start
