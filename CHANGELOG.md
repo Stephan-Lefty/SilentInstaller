@@ -4,6 +4,22 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.2] – 2026-08-24
+
+### Behoben
+
+- **Der Fortschritt war während der Installation unsichtbar.** Beim Start eines
+  Durchlaufs klappt die geteilte Ansicht zusammen, damit das Protokoll die
+  ganze Breite bekommt. Zugeklappt zeigt sie aber nur eine der beiden Seiten –
+  und ohne weiteres Zutun war das die Seitenleiste. Nach der Passwortabfrage
+  sah man deshalb nur die Kategorienliste, ohne Fortschritt und ohne
+  bedienbare Knöpfe. Die Installation lief dabei durch, man konnte ihr nur
+  nicht zusehen.
+- **Die Kopfzeile passte bei größerer Schrift nicht in die Seitenleiste.**
+  „SilentInstaller 1.4.1“ brauchte dort mehr Platz als vorhanden, was zu einer
+  Flut von GTK-Warnungen führte. Die Fassung steht jetzt in der zweiten Zeile,
+  neben dem Namen des Systems; im Fenstertitel bleibt sie neben dem Namen.
+
 ## [1.4.1] – 2026-08-24
 
 ### Behoben
@@ -249,6 +265,7 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 - Starter `silentinstaller.sh`, der fehlende GTK4-Abhängigkeiten nachrüstet,
   sowie `install.sh` für den Menüeintrag.
 
+[1.4.2]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.2
 [1.4.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.1
 [1.4.0]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.4.0
 [1.3.1]: https://github.com/Stephan-Lefty/SilentInstaller/releases/tag/v1.3.1

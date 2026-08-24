@@ -202,12 +202,12 @@ class MainWindow(Adw.ApplicationWindow):
 
         scroller = Gtk.ScrolledWindow(vexpand=True, child=self.sidebar_list)
 
-        subtitle = self.distro.pretty
+        subtitle = f"{__version__} · {self.distro.pretty}"
         if self.distro.family == FAMILY_UNKNOWN:
             subtitle += " – " + _("nicht unterstützt")
         header = Adw.HeaderBar()
         header.set_title_widget(
-            Adw.WindowTitle(title=TITEL, subtitle=esc(subtitle))
+            Adw.WindowTitle(title="SilentInstaller", subtitle=esc(subtitle))
         )
 
         toolbar = Adw.ToolbarView()
@@ -1248,7 +1248,11 @@ class MainWindow(Adw.ApplicationWindow):
         self.progress_title.set_label(_("Vorbereitung"))
         self.cancel_button.set_sensitive(True)
         self.close_progress_button.set_sensitive(False)
+        # Zugeklappt zeigt die geteilte Ansicht nur eine Seite – ohne den
+        # zweiten Aufruf wäre das die Seitenleiste, und vom Fortschritt bliebe
+        # nichts zu sehen.
         self.split.set_collapsed(True)
+        self.split.set_show_content(True)
         self.stack.set_visible_child_name("progress")
 
         self._runner = runner.ScriptRunner()
@@ -1341,6 +1345,7 @@ class MainWindow(Adw.ApplicationWindow):
     def _on_progress_done(self, _button: Gtk.Button) -> None:
         self.refresh_installed()
         self.split.set_collapsed(False)
+        self.split.set_show_content(False)
         self.stack.set_visible_child_name("browse")
 
     def refresh_installed(self) -> None:
