@@ -11,8 +11,13 @@ Offene Punkte und Ideen. Erledigtes wandert ins [Änderungsprotokoll](CHANGELOG.
       `apt-get update` und eine Probeinstallation von Visual Studio Code –
       alle Schritte mit Rückgabe 0. Die Oberfläche startet unter Debian 13,
       erkennt das System und findet für alle 84 Einträge eine Quelle.
-      **Offen bleibt:** ein Durchlauf auf einem echten Debian-Desktop mit
-      polkit-Passwortabfrage; im Container läuft das Skript als root.
+      **Nachgetragen am 26.08.2026:** Der Durchlauf auf einem echten Desktop
+      ist belegt. Stephan hat unter GuideOS (Debian 13, Cinnamon) installiert,
+      samt polkit-Passwortabfrage – im Container läuft das Skript als root,
+      dieser Weg war deshalb nie geprüft. Michaela hat den Fall auf ihrem
+      Rechner bestätigt: nach dem Reparaturskript und der neuen Fassung läuft
+      apt wieder, und die Installation geht durch. Damit ist auch der
+      Quellen-Fix aus 1.4.1 nicht mehr nur im Container belegt.
 - [x] ~~**Screenshot fürs README.**~~ Zehn Aufnahmen unter `docs/screenshots/`,
       erzeugt in einem Debian-13-Container unter Xvfb. Neu erzeugen lassen sie
       sich mit dem Skript im Anhang des Änderungsprotokolls; unter Wayland
@@ -29,7 +34,6 @@ Offene Punkte und Ideen. Erledigtes wandert ins [Änderungsprotokoll](CHANGELOG.
 - [ ] **Auswahldatei mit Systemangabe.** Beim Import könnte angezeigt werden,
       auf welchem System die Datei entstanden ist und welche Einträge dort eine
       andere Quelle hatten.
-- [ ] **Snap** als fünfte Quellenart für Ubuntu-Nutzer.
 - [ ] **TUI-Modus** mit `whiptail` für Rechner ohne Desktop.
 - [ ] **Katalog-Aktualisierung** aus dem Netz nachladen, statt nur mit dem
       Programm mitzuliefern.
