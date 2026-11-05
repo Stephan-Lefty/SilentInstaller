@@ -638,9 +638,26 @@ class MainWindow(Adw.ApplicationWindow):
         row.add_prefix(self._icon_for(app))
 
         if resolved is None:
-            tag = Gtk.Label(label=_("nicht verfügbar"))
-            tag.add_css_class("dim-label")
+            # Ohne Quelle lässt sich hier nichts tun – aber »nicht verfügbar«
+            # wäre gelogen, wenn das Programm längst läuft. Das trifft alles,
+            # was auf einem anderen Weg ins System kam: selbst gebaut, über
+            # ein eigenes Einrichtungsskript, aus einer fremden Paketquelle.
+            kennzeichen = backends.zeilen_kennzeichen(installed, hat_quelle=False)
+            # Beide Texte ausgeschrieben, damit sie in der Übersetzungstabelle
+            # auffindbar bleiben – ein _(variable) findet dort niemand wieder.
+            tag = Gtk.Label(label={
+                "installiert": _("installiert"),
+                "nicht verfügbar": _("nicht verfügbar"),
+            }[kennzeichen])
             tag.add_css_class("caption")
+            if installed:
+                tag.add_css_class("accent")
+                tag.set_tooltip_text(
+                    _("Vorhanden, aber nicht über SilentInstaller gekommen – "
+                      "deshalb lässt es sich hier weder erneuern noch entfernen.")
+                )
+            else:
+                tag.add_css_class("dim-label")
             row.add_suffix(tag)
             row.set_sensitive(False)
             return row

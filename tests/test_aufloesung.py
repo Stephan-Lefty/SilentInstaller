@@ -174,6 +174,32 @@ class MenueintraegeErkennen(unittest.TestCase):
         app = App(id="probe", name="Probe")
         self.assertFalse(self._zustand(app))
 
+    def test_installiert_schlaegt_nicht_verfuegbar(self):
+        """Der Fehler, den Stephan am 05.11.2026 gesehen hat.
+
+        KALENDERBlick und WOLKENErnte liefen auf seinem Manjaro, hatten dort
+        aber keine Installationsquelle – ihre Pakete gibt es nur als `.deb`.
+        Die Oberfläche prüfte zuerst auf die fehlende Quelle und kehrte sofort
+        zurück, bevor sie überhaupt nach »installiert« sah. In der Liste stand
+        deshalb »nicht verfügbar« neben einem Programm, das er gerade benutzte.
+        """
+        self.assertEqual(
+            backends.zeilen_kennzeichen(installiert=True, hat_quelle=False),
+            "installiert",
+        )
+
+    def test_ohne_quelle_und_ohne_programm_bleibt_es_dabei(self):
+        self.assertEqual(
+            backends.zeilen_kennzeichen(installiert=False, hat_quelle=False),
+            "nicht verfügbar",
+        )
+
+    def test_mit_quelle_und_ohne_programm_steht_nichts_da(self):
+        """Der Normalfall: Die Quelle allein ist keine Meldung wert."""
+        self.assertEqual(
+            backends.zeilen_kennzeichen(installiert=False, hat_quelle=True), ""
+        )
+
     def test_angabe_uebersteht_die_runde_durch_die_datei(self):
         app = App(id="probe", name="Probe", check_desktop=["a.desktop"],
                   sources={"apt": {"packages": ["x"]}})

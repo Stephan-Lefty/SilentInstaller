@@ -24,6 +24,14 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 
 ### Behoben
 
+- **»Nicht verfügbar« stand neben laufenden Programmen.** Die Listenzeile
+  prüfte zuerst, ob es auf diesem System eine Installationsquelle gibt, und
+  kehrte dann sofort zurück – die Prüfung auf »installiert« stand zehn Zeilen
+  weiter unten und kam nie zum Zug. Betroffen war alles, was auf anderem Weg
+  ins System kam: selbst gebaut, über ein eigenes Einrichtungsskript, aus
+  einer fremden Paketquelle. Jetzt schlägt vorhanden verfügbar, und ein
+  Hinweis erklärt, warum sich so ein Programm hier nicht entfernen lässt.
+
 - **Die Tests hingen davon ab, wer sie ausführte.** Sie luden den Katalog über
   `catalog.load()`, und das führt den persönlichen Katalog aus
   `~/.config/silentinstaller` mit. Wer dort eigene Programme einträgt, bekam

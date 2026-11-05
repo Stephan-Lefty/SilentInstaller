@@ -156,6 +156,26 @@ def _menueintraege() -> set[str]:
     return gefunden
 
 
+def zeilen_kennzeichen(installiert: bool, hat_quelle: bool) -> str:
+    """Was in einer Listenzeile rechts stehen muss.
+
+    Eine eigene Funktion, weil diese Entscheidung einmal falsch herum stand:
+    Die Oberfläche prüfte zuerst, ob es eine Installationsquelle gibt, und
+    kehrte dann sofort zurück. Ein längst laufendes Programm wurde damit als
+    »nicht verfügbar« ausgewiesen – betroffen war alles, was auf anderem Weg
+    ins System kam. In einer GTK-Zeile lässt sich das nicht prüfen, hier
+    schon.
+
+    Vorhanden schlägt verfügbar: Was läuft, läuft, auch wenn SilentInstaller
+    es nicht noch einmal installieren könnte.
+    """
+    if installiert:
+        return "installiert"
+    if not hat_quelle:
+        return "nicht verfügbar"
+    return ""
+
+
 @dataclass
 class InstalledIndex:
     """Momentaufnahme aller installierten Pakete – einmal erfragt, oft benutzt."""

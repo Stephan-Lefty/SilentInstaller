@@ -95,6 +95,10 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "installiert": "installed",
         "Bereits vorhanden über {quelle}": "Already present via {quelle}",
         "einen Prüfbefehl": "a check command",
+        "Vorhanden, aber nicht über SilentInstaller gekommen – "
+        "deshalb lässt es sich hier weder erneuern noch entfernen.":
+            "Present, but it did not arrive through SilentInstaller – so it "
+            "cannot be updated or removed from here.",
         "Bearbeiten …": "Edit …",
         "Aus der Liste nehmen": "Remove from list",
         "Ausblenden": "Hide",
