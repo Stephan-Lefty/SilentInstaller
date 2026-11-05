@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AppStream-Metadaten. Ohne diese Datei kennen die Software-Verwaltungen
+  (GNOME Software, KDE Discover, Cinnamons Anwendungsverwaltung) das
+  Programm nicht - es taucht dort weder unter den installierten
+  Anwendungen auf noch lässt es sich von dort entfernen.
+-->
+<component type="desktop-application">
+  <id>de.stephanlefty.SilentInstaller</id>
+
+  <name>SilentInstaller</name>
+  <summary>Die eigenen Programme nach einer Neuinstallation in einem Zug einrichten</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+
+  <developer id="de.stephanlefty">
+    <name>Stephan Rösner</name>
+  </developer>
+
+  <description>
+    <p>
+      Nach einer Grundinstallation von Debian, Ubuntu, Mint, Arch oder
+      Manjaro fehlen die Programme, die man täglich braucht. Statt sie
+      einzeln zu suchen, wählt man sie hier aus einer Liste und lässt
+      sie in einem Durchgang einrichten.
+    </p>
+    <p>
+      Die Auswahl lässt sich speichern und auf dem nächsten Rechner
+      wiederverwenden.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">de.stephanlefty.SilentInstaller.desktop</launchable>
+
+  <!--
+    Das Symbol liegt unter seinem schlichten Namen im Symbolthema
+    (~/.local/share/icons/hicolor/<groesse>/apps/de.stephanlefty.SilentInstaller.png).
+  -->
+  <icon type="stock">de.stephanlefty.SilentInstaller</icon>
+
+  <categories>
+    <category>System</category>
+    <category>PackageManager</category>
+  </categories>
+
+  <keywords>
+    <keyword>Installation</keyword>
+    <keyword>Einrichtung</keyword>
+    <keyword>Pakete</keyword>
+  </keywords>
+
+  <url type="homepage">https://github.com/Stephan-Lefty/SilentInstaller</url>
+  <url type="bugtracker">https://github.com/Stephan-Lefty/SilentInstaller/issues</url>
+
+  <content_rating type="oars-1.1"/>
+
+  <releases>
+    <release version="1.5.0" date="2026-11-05"/>
+  </releases>
+</component>

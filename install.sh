@@ -60,6 +60,7 @@ case "${1:-install}" in
   uninstall|--uninstall|remove)
     rm -rf "$ZIEL"
     rm -f "$DESKTOP_DIR/$KENNUNG.desktop"
+    rm -f "$DATEN/metainfo/$KENNUNG.metainfo.xml"
     rm -f "$BIN_DIR/silentinstaller"
     find "$ICON_DIR" \( -name "$KENNUNG.*" -o -name "silentinstaller-*" \) -delete 2>/dev/null || true
     aktualisiere_zwischenspeicher
@@ -87,6 +88,14 @@ done < <(find "$QUELLE/data/icons/hicolor" -type f \( -name "$KENNUNG.*" -o -nam
 
 sed "s|@EXEC@|$ZIEL/silentinstaller.sh|" \
   "$QUELLE/data/$KENNUNG.desktop" >"$DESKTOP_DIR/$KENNUNG.desktop"
+
+# Die Angaben für die Software-Verwaltung. Ohne sie kennt GNOME
+# Software, Discover oder pamac SilentInstaller nicht - es erscheint
+# dort weder unter den installierten noch lässt es sich von dort
+# entfernen.
+METAINFO_DIR="$DATEN/metainfo"
+mkdir -p "$METAINFO_DIR"
+cp "$QUELLE/data/$KENNUNG.metainfo.xml" "$METAINFO_DIR/" 2>/dev/null || true
 
 aktualisiere_zwischenspeicher
 
