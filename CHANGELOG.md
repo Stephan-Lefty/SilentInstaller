@@ -38,6 +38,16 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
   Fehlschläge, die mit dem Code nichts zu tun hatten. Auf GitHubs Rechnern
   fiel das nie auf, weil es dort keinen persönlichen Katalog gibt.
 
+## [1.5.1] – 2026-11-05
+
+### Geändert
+
+- Das Programm erscheint jetzt in der Software-Verwaltung (GNOME
+  Software, KDE Discover, Cinnamons Anwendungsverwaltung) - mit
+  Beschreibung und zum Entfernen auf Knopfdruck. Dafür fehlten bisher
+  die AppStream-Angaben; ohne sie kennen die Verwaltungen ein Programm
+  schlicht nicht.
+
 ## [1.5.0] – 2026-08-24
 
 ### Behoben
