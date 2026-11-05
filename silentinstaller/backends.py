@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from .catalog import App, SOURCE_KINDS
 from .distro import Distro
@@ -107,6 +109,53 @@ def _run(args: list[str]) -> str:
     return result.stdout if result.returncode == 0 else ""
 
 
+def _menueintraege() -> set[str]:
+    """Alle Menüeinträge des Systems, als Dateinamen.
+
+    Linux führt kein zentrales Verzeichnis darüber, was installiert ist.
+    Jedes Verteilsystem führt nur über sich selbst Buch: dpkg über Debian-
+    Pakete, pacman über Arch-Pakete, Flatpak und Snap über ihre eigenen.
+    Ein Programm, das sich mit einem eigenen Skript nach ``~/.local/bin``
+    legt, taucht in keinem davon auf.
+
+    Am nächsten an einem gemeinsamen Verzeichnis kommen die Menüeinträge
+    nach der XDG-Spezifikation. Vollständig sind auch sie nicht – reine
+    Kommandozeilenwerkzeuge legen keinen an –, aber sie sind das einzige
+    Register, in das sich jedes Verteilsystem einträgt.
+    """
+    wurzeln: list[Path] = []
+    heim = os.environ.get("XDG_DATA_HOME") or os.path.expanduser("~/.local/share")
+    wurzeln.append(Path(heim))
+    weitere = os.environ.get("XDG_DATA_DIRS") or "/usr/local/share:/usr/share"
+    wurzeln.extend(Path(teil) for teil in weitere.split(":") if teil)
+    # Flatpak exportiert seine Einträge hierhin. Auf den meisten Systemen
+    # steht das ohnehin in XDG_DATA_DIRS – verlassen sollte man sich darauf
+    # nicht, doppelt gesucht kostet nichts.
+    wurzeln.append(Path(heim) / "flatpak/exports/share")
+    wurzeln.append(Path("/var/lib/flatpak/exports/share"))
+
+    gefunden: set[str] = set()
+    gesehen: set[Path] = set()
+    for wurzel in wurzeln:
+        ordner = wurzel / "applications"
+        try:
+            echt = ordner.resolve()
+        except OSError:
+            continue
+        if echt in gesehen:
+            continue
+        gesehen.add(echt)
+        try:
+            for eintrag in ordner.iterdir():
+                if eintrag.name.endswith(".desktop"):
+                    gefunden.add(eintrag.name)
+        except OSError:
+            # Verzeichnis gibt es nicht oder ist nicht lesbar – beides ist
+            # normal, etwa wenn XDG_DATA_DIRS auf nichts Vorhandenes zeigt.
+            continue
+    return gefunden
+
+
 @dataclass
 class InstalledIndex:
     """Momentaufnahme aller installierten Pakete – einmal erfragt, oft benutzt."""
@@ -115,6 +164,8 @@ class InstalledIndex:
     pacman: set[str] = field(default_factory=set)
     snap: set[str] = field(default_factory=set)
     flatpak: set[str] = field(default_factory=set)
+    #: Dateinamen aller Menüeinträge, siehe :func:`_menueintraege`.
+    desktop: set[str] = field(default_factory=set)
     #: Das System, auf das sich die Aufnahme bezieht – nötig, weil Paketnamen
     #: sich zwischen Abkömmlingen unterscheiden.
     distro: Distro = field(default_factory=Distro)
@@ -150,6 +201,7 @@ class InstalledIndex:
         if "flatpak" in distro.managers:
             out = _run(["flatpak", "list", "--app", "--columns=application"])
             index.flatpak = {line.strip() for line in out.splitlines() if line.strip()}
+        index.desktop = _menueintraege()
         return index
 
     def has(self, kind: str, name: str) -> bool:
@@ -190,5 +242,10 @@ class InstalledIndex:
         if ref and ref in self.flatpak:
             return True, "flatpak"
         if app.check_command and shutil.which(app.check_command):
+            return True, None
+        # Zuletzt der Menüeintrag. Er fängt die Programme, die über kein
+        # Paketverzeichnis laufen und keinen Befehl ins PATH legen – etwa
+        # solche, die ein eigenes Einrichtungsskript mitbringen.
+        if any(name in self.desktop for name in app.check_desktop):
             return True, None
         return False, None

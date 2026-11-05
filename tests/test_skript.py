@@ -15,6 +15,13 @@ from silentinstaller import backends, catalog, runner
 from silentinstaller.catalog import App
 from silentinstaller.distro import Distro
 
+#: Nur die mitgelieferte Liste, ohne den persönlichen Katalog aus
+#: ``~/.config/silentinstaller``. Ohne das hingen diese Tests davon ab, wer
+#: sie ausführt: Wer dort eigene Programme einträgt, bekäme Fehlschläge, die
+#: mit dem Code nichts zu tun haben. Auf GitHubs Rechnern fiel das nie auf,
+#: weil es dort keinen persönlichen Katalog gibt.
+OHNE_PERSOENLICHEN = Path("/nicht-vorhanden/catalog.json")
+
 SYSTEME = {
     "debian": Distro(id="debian", name="Debian", family="debian", managers={"apt"}),
     "ubuntu": Distro(id="ubuntu", name="Ubuntu", family="debian",
@@ -46,7 +53,7 @@ def pruefe_syntax(pruefling, skript: str) -> None:
 class GesamterKatalog(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.katalog = catalog.load()
+        cls.katalog = catalog.load(OHNE_PERSOENLICHEN)
 
     def _posten(self, system):
         return [
@@ -125,7 +132,7 @@ class Reihenfolge(unittest.TestCase):
     """Die Schritte müssen in einer Reihenfolge stehen, die aufgeht."""
 
     def setUp(self):
-        self.katalog = catalog.load()
+        self.katalog = catalog.load(OHNE_PERSOENLICHEN)
         self.system = SYSTEME["debian"]
         posten = [
             gefunden
@@ -166,7 +173,7 @@ class Schutzvorrichtungen(unittest.TestCase):
     def test_hilfsfunktion_gegen_doppelte_quellen_ist_enthalten(self):
         """Ohne sie kann apt vollständig blockiert werden."""
         system = SYSTEME["debian"]
-        katalog = catalog.load()
+        katalog = catalog.load(OHNE_PERSOENLICHEN)
         brave = katalog.by_id("brave")
         self.assertIsNotNone(brave, "Eintrag brave fehlt")
         posten = [backends.resolve(brave, system)]

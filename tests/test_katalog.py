@@ -6,9 +6,17 @@ streng: doppelte Kennungen, unbekannte Kategorien, Quellen ohne Inhalt.
 
 import json
 import unittest
+from pathlib import Path
 
 from silentinstaller import catalog
 from silentinstaller.catalog import SOURCE_KINDS
+
+#: Nur die mitgelieferte Liste, ohne den persönlichen Katalog aus
+#: ``~/.config/silentinstaller``. Ohne das hingen diese Tests davon ab, wer
+#: sie ausführt: Wer dort eigene Programme einträgt, bekäme Fehlschläge, die
+#: mit dem Code nichts zu tun haben. Auf GitHubs Rechnern fiel das nie auf,
+#: weil es dort keinen persönlichen Katalog gibt.
+OHNE_PERSOENLICHEN = Path("/nicht-vorhanden/catalog.json")
 
 
 class KatalogAufbau(unittest.TestCase):
@@ -101,7 +109,7 @@ class KatalogAufbau(unittest.TestCase):
                 self.assertTrue(kategorie.get("name_en"))
 
     def test_katalog_laesst_sich_laden(self):
-        geladen = catalog.load()
+        geladen = catalog.load(OHNE_PERSOENLICHEN)
         self.assertEqual(len(geladen.apps), len(self.apps))
         self.assertTrue(geladen.used_categories())
 

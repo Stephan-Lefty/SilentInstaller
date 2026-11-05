@@ -103,6 +103,11 @@ class App:
     homepage: str = ""
     #: Prüfbefehl – liegt dieses Programm im PATH, gilt die App als installiert.
     check_command: str = ""
+    #: Menüeinträge, die das Programm anlegt, etwa ["postkutsche.desktop"].
+    #: Findet sich einer davon, gilt die App als installiert. Nötig für
+    #: Programme, die gar keinen Befehl ins PATH legen, und für solche, die
+    #: unter einem anderen Namen laufen, als der Menüeintrag vermuten lässt.
+    check_desktop: list[str] = field(default_factory=list)
     #: Reihenfolge der bevorzugten Quellen, z. B. ["flatpak", "apt"].
     prefer: list[str] = field(default_factory=list)
     #: Quellen nach Art: {"apt": {...}, "flatpak": {...}}
@@ -131,6 +136,7 @@ class App:
             icon=str(raw.get("icon", "")),
             homepage=str(raw.get("homepage", "")),
             check_command=str(raw.get("check_command", "")),
+            check_desktop=[str(d) for d in raw.get("check_desktop", []) if d],
             prefer=[str(p) for p in raw.get("prefer", []) if p in SOURCE_KINDS],
             sources=sources,
             pre_install=str(raw.get("pre_install", "")),
@@ -153,6 +159,8 @@ class App:
             value = getattr(self, key)
             if value:
                 data[key] = value
+        if self.check_desktop:
+            data["check_desktop"] = list(self.check_desktop)
         if self.prefer:
             data["prefer"] = list(self.prefer)
         data["sources"] = {k: v for k, v in self.sources.items() if v}

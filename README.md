@@ -201,6 +201,7 @@ bearbeitet, findet sie unter `~/.config/silentinstaller/catalog.json`:
   "description_en": "Short description",
   "category": "system",
   "check_command": "meintool",
+  "check_desktop": ["meintool.desktop"],
   "prefer": ["flatpak"],
   "sources": {
     "apt":     { "packages": ["meintool", "meintool-doc"] },
@@ -210,6 +211,36 @@ bearbeitet, findet sie unter `~/.config/silentinstaller/catalog.json`:
   },
   "pre_install":  "echo Vorbereitung",
   "post_install": "systemctl enable --now meintool.service"
+}
+```
+
+### Woran erkannt wird, dass etwas schon da ist
+
+Linux führt kein gemeinsames Verzeichnis darüber, was installiert ist: `dpkg`
+kennt nur Debian-Pakete, `pacman` nur Arch-Pakete, Flatpak und Snap nur ihre
+eigenen. Ein Programm mit eigenem Einrichtungsskript steht in keinem davon.
+SilentInstaller sieht deshalb der Reihe nach nach:
+
+1. in den Paketverzeichnissen von APT, Pacman, Snap und Flatpak,
+2. ob `check_command` im `PATH` liegt,
+3. ob einer der unter `check_desktop` genannten Menüeinträge existiert.
+
+Der dritte Punkt fängt alles, was sich selbst nach `~/.local` legt und keinen
+Befehl ins `PATH` schreibt. Gesucht wird in den Verzeichnissen nach der
+XDG-Spezifikation, also auch in `~/.local/share/applications` und bei den
+Flatpak-Exporten.
+
+### Ein Einrichtungsskript statt eines Pakets
+
+Programme ohne Paket lassen sich über die Quelle `script` einrichten. Weil der
+gesamte Lauf als root stattfindet, ein solches Skript seine Dateien aber meist
+ins Benutzerverzeichnis legt, steht dafür `si_als_benutzer` bereit — ohne das
+landete alles in `/root/.local`:
+
+```json
+"script": {
+  "install": "si_als_benutzer 'git clone --depth 1 https://… \"$HOME/.local/src/meintool\" && cd \"$HOME/.local/src/meintool\" && ./install.sh'",
+  "remove":  "si_als_benutzer 'cd \"$HOME/.local/src/meintool\" && ./install.sh --entfernen'"
 }
 ```
 

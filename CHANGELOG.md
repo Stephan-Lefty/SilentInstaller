@@ -4,6 +4,32 @@ Alle nennenswerten Änderungen an SilentInstaller. Das Format folgt
 [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), die Versionierung
 [Semantic Versioning](https://semver.org/lang/de/).
 
+## [Unveröffentlicht]
+
+### Neu
+
+- **Programme werden am Menüeintrag erkannt.** Bisher galt ein Programm nur
+  als vorhanden, wenn es in einem Paketverzeichnis stand oder sein Befehl im
+  `PATH` lag. Alles mit eigenem Einrichtungsskript fiel durch – Linux führt
+  kein gemeinsames Verzeichnis der installierten Programme. Das neue
+  Katalogfeld `check_desktop` nennt die Menüeinträge eines Programms; gesucht
+  wird in allen Verzeichnissen nach der XDG-Spezifikation, einschließlich der
+  Flatpak-Exporte.
+
+- **`si_als_benutzer` für Einrichtungsskripte.** Der Lauf findet als root
+  statt, viele Skripte legen ihre Dateien aber ins Benutzerverzeichnis – ohne
+  Hilfe landeten sie in `/root/.local`, wo sie niemandem nützen. Die Funktion
+  ermittelt den angemeldeten Benutzer über `PKEXEC_UID` beziehungsweise
+  `SUDO_USER` und führt den Befehl mit dessen `HOME` und `PATH` aus.
+
+### Behoben
+
+- **Die Tests hingen davon ab, wer sie ausführte.** Sie luden den Katalog über
+  `catalog.load()`, und das führt den persönlichen Katalog aus
+  `~/.config/silentinstaller` mit. Wer dort eigene Programme einträgt, bekam
+  Fehlschläge, die mit dem Code nichts zu tun hatten. Auf GitHubs Rechnern
+  fiel das nie auf, weil es dort keinen persönlichen Katalog gibt.
+
 ## [1.5.0] – 2026-08-24
 
 ### Behoben

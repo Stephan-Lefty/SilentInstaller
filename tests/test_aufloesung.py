@@ -4,11 +4,22 @@ Hier wären die Ubuntu-Fehler aufgefallen: Paketnamen, die es dort nicht gibt,
 und die stille Umleitung von apt auf Snap.
 """
 
+import os
+import tempfile
 import unittest
+from pathlib import Path
+from unittest import mock
 
 from silentinstaller import backends, catalog
 from silentinstaller.catalog import App
 from silentinstaller.distro import Distro
+
+#: Nur die mitgelieferte Liste, ohne den persönlichen Katalog aus
+#: ``~/.config/silentinstaller``. Ohne das hingen diese Tests davon ab, wer
+#: sie ausführt: Wer dort eigene Programme einträgt, bekäme Fehlschläge, die
+#: mit dem Code nichts zu tun haben. Auf GitHubs Rechnern fiel das nie auf,
+#: weil es dort keinen persönlichen Katalog gibt.
+OHNE_PERSOENLICHEN = Path("/nicht-vorhanden/catalog.json")
 
 DEBIAN = Distro(id="debian", name="Debian", family="debian", managers={"apt"})
 UBUNTU = Distro(
@@ -104,10 +115,76 @@ class QuelleJeSystem(unittest.TestCase):
         self.assertTrue(aufgeloest.classic)
 
 
+class MenueintraegeErkennen(unittest.TestCase):
+    """Programme, die in keinem Paketverzeichnis stehen.
+
+    Linux führt kein gemeinsames Verzeichnis der installierten Programme –
+    dpkg kennt nur Debian-Pakete, pacman nur Arch-Pakete, Flatpak und Snap
+    nur ihre eigenen. Was mit einem eigenen Einrichtungsskript nach
+    ``~/.local`` wandert, steht in keinem davon. Übrig bleibt der
+    Menüeintrag nach XDG.
+    """
+
+    def setUp(self):
+        self.ordner = tempfile.TemporaryDirectory()
+        self.menue = Path(self.ordner.name) / "applications"
+        self.menue.mkdir()
+        # Beide Variablen auf den Testordner, damit die echten Einträge des
+        # ausführenden Rechners nicht hineinspielen.
+        self.umgebung = mock.patch.dict(
+            os.environ,
+            {"XDG_DATA_HOME": self.ordner.name, "XDG_DATA_DIRS": self.ordner.name},
+        )
+        self.umgebung.start()
+
+    def tearDown(self):
+        self.umgebung.stop()
+        self.ordner.cleanup()
+
+    def _eintrag(self, name):
+        (self.menue / name).write_text(
+            "[Desktop Entry]\nType=Application\nName=Probe\n", encoding="utf-8"
+        )
+
+    def _zustand(self, app):
+        return backends.InstalledIndex.collect(DEBIAN).app_state(app)[0]
+
+    def test_ohne_befehl_zaehlt_der_menueintrag(self):
+        self._eintrag("probe.desktop")
+        app = App(id="probe", name="Probe", check_desktop=["probe.desktop"])
+        self.assertTrue(self._zustand(app))
+
+    def test_ohne_menueintrag_gilt_es_als_nicht_installiert(self):
+        """Die Gegenprobe – sonst meldete die Prüfung immer »vorhanden«."""
+        app = App(id="probe", name="Probe", check_desktop=["probe.desktop"])
+        self.assertFalse(self._zustand(app))
+
+    def test_einer_von_mehreren_genuegt(self):
+        """Manche Programme legen mehrere Einträge an, etwa einen zum Erfassen."""
+        self._eintrag("zweiter.desktop")
+        app = App(
+            id="probe", name="Probe",
+            check_desktop=["erster.desktop", "zweiter.desktop"],
+        )
+        self.assertTrue(self._zustand(app))
+
+    def test_ohne_angabe_wird_nichts_gefunden(self):
+        """Ein leeres Feld darf nicht versehentlich alles treffen."""
+        self._eintrag("probe.desktop")
+        app = App(id="probe", name="Probe")
+        self.assertFalse(self._zustand(app))
+
+    def test_angabe_uebersteht_die_runde_durch_die_datei(self):
+        app = App(id="probe", name="Probe", check_desktop=["a.desktop"],
+                  sources={"apt": {"packages": ["x"]}})
+        wieder = App.from_dict(app.to_dict())
+        self.assertEqual(wieder.check_desktop, ["a.desktop"])
+
+
 class GesamterKatalog(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.katalog = catalog.load()
+        cls.katalog = catalog.load(OHNE_PERSOENLICHEN)
 
     def _ohne_quelle(self, system):
         return [

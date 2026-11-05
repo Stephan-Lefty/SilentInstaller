@@ -196,6 +196,7 @@ it lives at `~/.config/silentinstaller/catalog.json`:
   "description_en": "Short description",
   "category": "system",
   "check_command": "mytool",
+  "check_desktop": ["mytool.desktop"],
   "prefer": ["flatpak"],
   "sources": {
     "apt":     { "packages": ["mytool", "mytool-doc"] },
@@ -205,6 +206,36 @@ it lives at `~/.config/silentinstaller/catalog.json`:
   },
   "pre_install":  "echo preparing",
   "post_install": "systemctl enable --now mytool.service"
+}
+```
+
+### How a program is recognised as already present
+
+Linux keeps no common register of what is installed: `dpkg` knows only Debian
+packages, `pacman` only Arch packages, Flatpak and Snap only their own. A
+program with its own install script appears in none of them. SilentInstaller
+therefore looks in turn at:
+
+1. the package registers of APT, Pacman, Snap and Flatpak,
+2. whether `check_command` is on the `PATH`,
+3. whether any menu entry listed under `check_desktop` exists.
+
+The third catches everything that installs itself into `~/.local` without
+putting a command on the `PATH`. The search covers the directories defined by
+the XDG specification, including `~/.local/share/applications` and the Flatpak
+exports.
+
+### An install script instead of a package
+
+Programs without a package can be set up through the `script` source. The whole
+run happens as root, but such scripts usually place their files in the user's
+home — so `si_als_benutzer` is available. Without it everything would land in
+`/root/.local`:
+
+```json
+"script": {
+  "install": "si_als_benutzer 'git clone --depth 1 https://… \"$HOME/.local/src/mytool\" && cd \"$HOME/.local/src/mytool\" && ./install.sh'",
+  "remove":  "si_als_benutzer 'cd \"$HOME/.local/src/mytool\" && ./install.sh --entfernen'"
 }
 ```
 

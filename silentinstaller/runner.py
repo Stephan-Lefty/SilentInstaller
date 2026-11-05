@@ -343,6 +343,38 @@ def build_remove_plan(items: list[Resolved], distro: Distro, purge: bool = False
 # -- Skripterzeugung -------------------------------------------------------
 
 HELPERS = r'''
+si_benutzer() {
+  # Wer hat das Programm gestartet? Der gesamte Lauf findet als root statt,
+  # aber nicht alles gehört dorthin: Einrichtungsskripte legen ihre Dateien
+  # nach ~/.local, und das wäre als root /root/.local – unerreichbar für den
+  # Menschen, der die Installation angestoßen hat.
+  local name=""
+  [ -n "${PKEXEC_UID:-}" ] && name="$(id -nu "$PKEXEC_UID" 2>/dev/null || true)"
+  [ -n "$name" ] || name="${SUDO_USER:-}"
+  # Läuft ohne pkexec und ohne sudo, ist der aufrufende Benutzer der richtige.
+  [ -n "$name" ] || { [ "$(id -u)" != "0" ] && name="$(id -nu)"; }
+  printf '%s' "$name"
+}
+
+si_als_benutzer() {
+  # Führt $* als der angemeldete Benutzer aus, mit dessen HOME und PATH.
+  local name
+  name="$(si_benutzer)"
+  if [ -z "$name" ]; then
+    echo "FEHLER: Es ließ sich nicht ermitteln, für wen installiert werden soll." >&2
+    return 1
+  fi
+  if [ "$name" = "$(id -nu)" ]; then
+    bash -lc "$*"
+    return $?
+  fi
+  local heim
+  heim="$(getent passwd "$name" | cut -d: -f6)"
+  runuser -u "$name" -- env HOME="$heim" \
+      PATH="$heim/.local/bin:/usr/local/bin:/usr/bin:/bin" \
+      bash -lc "$*"
+}
+
 si_quelle_woanders() {
   # Steht diese Paketquelle schon in einer anderen Datei? $1=URL $2=eigene Datei
   local url="${1%/}" eigene="$2" datei
