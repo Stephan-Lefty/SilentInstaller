@@ -1,0 +1,19 @@
+silentinstaller (1.5.1) unstable; urgency=medium
+
+  * Erstes Paket, das mit dpkg-buildpackage gebaut wird. Damit kann eine
+    Distribution es selbst nachbauen und aufnehmen - angeregt am
+    06.11.2026 vom Admin der GuideOS-Distribution.
+  * Die AppStream-Angaben liegen jetzt im Paket. Sie fehlten darin, obwohl
+    die Fassung 1.5.1 vom 05.11.2026 „in der Software-Verwaltung sichtbar"
+    heißt: install.sh kopierte die Datei, build-deb.sh nahm sie nie mit.
+    Wer über das .deb installierte, fand SilentInstaller deshalb weder in
+    GNOME Software noch in Discover - und konnte es dort auch nicht
+    entfernen.
+  * policykit-1 heißt in Debian 13 polkitd. Das alte Paket gibt es dort
+    nicht mehr; die Installation gelang bisher nur, weil die Alternative
+    „| pkexec" einsprang.
+  * Das Änderungsprotokoll im Paket liegt im Debian-Format. Bisher wurde
+    die Markdown-Fassung gezippt abgelegt, was lintian beanstandet.
+  * Handbuchseite für silentinstaller.
+
+ -- Stephan-Lefty <204562172+Stephan-Lefty@users.noreply.github.com>  Fri, 06 Nov 2026 16:30:00 +0100

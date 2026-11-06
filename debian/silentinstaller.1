@@ -1,0 +1,38 @@
+.TH SILENTINSTALLER 1 "06. November 2026" "SilentInstaller 1.5.1" "Benutzerbefehle"
+.SH BEZEICHNUNG
+silentinstaller \- Lieblingsprogramme nach der Grundinstallation nachrüsten
+.SH ÜBERSICHT
+.B silentinstaller
+.SH BESCHREIBUNG
+.B SilentInstaller
+hält die eigenen Lieblingsprogramme in einer Liste vor und installiert
+sie nach einer Grundinstallation in einem einzigen Durchlauf \(em mit
+genau einer Passwortabfrage.
+.PP
+Jeder Eintrag kennt seine Paketnamen für APT, Pacman und Flathub. Auf
+dem laufenden System wird automatisch die passende Quelle gewählt;
+neben Distributionspaketen und Flatpak werden direkte
+.IR .deb -Downloads
+und AppImages unterstützt.
+.SH AUSWAHL MITNEHMEN
+Die getroffene Auswahl lässt sich als Datei sichern und auf einem
+anderen Rechner wieder einlesen \(em gleich ob dieser auf Debian oder
+auf Arch beruht. Gespeichert werden die Einträge, nicht die
+Paketnamen eines bestimmten Systems.
+.SH SPRACHE
+Die Oberfläche spricht Deutsch und Englisch und richtet sich nach der
+Systemsprache.
+.SH DATEIEN
+.TP
+.I ~/.config/silentinstaller/
+Einstellungen und die eigene Programmliste.
+.SH FEHLER
+Fehler bitte melden unter
+.UR https://github.com/Stephan-Lefty/SilentInstaller/issues
+.UE .
+.SH SIEHE AUCH
+.BR apt (8),
+.BR flatpak (1),
+.BR pkexec (1)
+.SH AUTOR
+Stephan Rösner

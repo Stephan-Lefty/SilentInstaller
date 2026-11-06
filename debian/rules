@@ -1,0 +1,37 @@
+#!/usr/bin/make -f
+# Kein pybuild: SilentInstaller ist kein Python-Paket im Debian-Sinn. Der
+# Quelltext liegt unter /usr/share/silentinstaller/ und wird über einen
+# Starter in /usr/bin aufgerufen - nicht über dist-packages.
+
+PAKET = silentinstaller
+KENNUNG = de.stephanlefty.SilentInstaller
+ZIEL = debian/$(PAKET)
+
+%:
+	dh $@
+
+# Nichts zu übersetzen und nichts zu bauen.
+override_dh_auto_build:
+
+override_dh_auto_install:
+	install -d $(ZIEL)/usr/share/$(PAKET)/data
+	install -d $(ZIEL)/usr/share/icons/hicolor
+	install -d $(ZIEL)/usr/share/applications
+	cp -r silentinstaller $(ZIEL)/usr/share/$(PAKET)/
+	find $(ZIEL)/usr/share/$(PAKET) -name '__pycache__' -type d -exec rm -rf {} + || true
+	cp -r data/icons $(ZIEL)/usr/share/$(PAKET)/data/
+	cp -r data/icons/hicolor/. $(ZIEL)/usr/share/icons/hicolor/
+	install -Dm755 debian/starter $(ZIEL)/usr/bin/$(PAKET)
+	sed 's|@EXEC@|/usr/bin/$(PAKET)|' data/$(KENNUNG).desktop \
+		> $(ZIEL)/usr/share/applications/$(KENNUNG).desktop
+	chmod 644 $(ZIEL)/usr/share/applications/$(KENNUNG).desktop
+	# Ohne diese Datei kennt keine Software-Verwaltung das Programm. Sie
+	# fehlte im .deb bis zum 06.11.2026 - install.sh kopierte sie, das
+	# Bauskript nicht.
+	install -Dm644 data/$(KENNUNG).metainfo.xml \
+		$(ZIEL)/usr/share/metainfo/$(KENNUNG).metainfo.xml
+
+# README und README.en gehören in die Dokumentation; changelog und
+# copyright legt dh_installdocs ohnehin ab.
+override_dh_installdocs:
+	dh_installdocs README.md README.en.md

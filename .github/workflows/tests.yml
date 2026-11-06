@@ -68,8 +68,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Bauwerkzeuge
+        # Gebaut wird gegen Debian 13 - das haben die Anwender, und
+        # GuideOS baut darauf auf. Auf ubuntu-latest zu prüfen hieße,
+        # gegen andere Paketnamen zu bauen.
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends \
+            build-essential debhelper lintian
+
       - name: Paket bauen
-        run: ./build-deb.sh
+        # **Mit dpkg-buildpackage, nicht mehr von Hand.** Angeregt am
+        # 06.11.2026 vom Admin der GuideOS-Distribution: Nur so kann
+        # eine Distribution das Paket nachbauen und aufnehmen. Die
+        # Paketquellen liegen in debian/.
+        run: |
+          dpkg-buildpackage -us -uc
+          mkdir -p dist
+          mv ../silentinstaller_*.deb dist/
+
+      - name: Was lintian sagt
+        # Blockierend: Eine Prüfung, die nie rot wird, liest niemand.
+        # Der erste Lauf am 06.11.2026 fand vier Befunde, darunter ein
+        # totes Abhängigkeitspaket (policykit-1 gibt es in Debian 13
+        # nicht mehr).
+        run: lintian --no-tag-display-limit --fail-on warning dist/*.deb
 
       - name: Inhalt prüfen
         # Ein Paket, dem eine Datei fehlt, fällt sonst erst beim Benutzer auf.
@@ -83,7 +106,10 @@ jobs:
             ./usr/share/silentinstaller/silentinstaller/app.py \
             ./usr/share/silentinstaller/silentinstaller/data/catalog.json \
             ./usr/share/icons/hicolor/48x48/apps/de.stephanlefty.SilentInstaller.png \
-            ./usr/share/doc/silentinstaller/copyright
+            ./usr/share/doc/silentinstaller/copyright \
+            ./usr/share/doc/silentinstaller/changelog.gz \
+            ./usr/share/man/man1/silentinstaller.1.gz \
+            ./usr/share/metainfo/de.stephanlefty.SilentInstaller.metainfo.xml
           do
             dpkg-deb --contents "$DATEI" | grep -q " $pfad\$" \
               && echo "  vorhanden: ${pfad#./}" \

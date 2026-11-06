@@ -1,0 +1,8 @@
+#!/usr/bin/python3
+"""SilentInstaller starten."""
+import sys
+
+sys.path.insert(0, "/usr/share/silentinstaller")
+from silentinstaller.app import main  # noqa: E402
+
+sys.exit(main())
